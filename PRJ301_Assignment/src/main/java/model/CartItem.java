@@ -26,6 +26,13 @@ public class CartItem {
     public CartItem() {
     }
 
+    public CartItem(int id, Customer customer, Product product, int quantity) {
+        this.id = id;
+        this.customer = customer;
+        this.product = product;
+        this.quantity = quantity;
+    }
+    
     public int getId() {
         return id;
     }

@@ -27,9 +27,95 @@ public class ProductDAO {
             em.close();
         }
     }
+    public long count() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT COUNT(p) FROM Product p", Long.class).getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+    public List<Product> getLatest(int limit) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT p FROM Product p ORDER BY p.id DESC", Product.class)
+                     .setMaxResults(limit)
+                     .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    public List<Product> searchByKeyword(String keyword) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT p FROM Product p WHERE p.name LIKE :kw", Product.class)
+                     .setParameter("kw", "%" + keyword + "%")
+                     .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    public List<Product> getTopSelling(int limit) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                "SELECT od.product FROM OrderDetail od GROUP BY od.product ORDER BY SUM(od.quantity) DESC",
+                Product.class)
+                .setMaxResults(limit)
+                .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
     public Product findById(int id) {
         EntityManager em = JPAUtil.getEntityManager();
         return em.find(Product.class, id);
     }
+    public void insert(Product product) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            em.persist(product);
+            trans.commit();
+        } catch (Exception e) {
+            if (trans.isActive()) trans.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+    public void update(Product product) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            em.merge(product);
+            trans.commit();
+        } catch (Exception e) {
+            if (trans.isActive()) trans.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+    public void delete(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            Product p = em.find(Product.class, id);
+            if (p != null) {
+                em.remove(p);
+            }
+            trans.commit();
+        } catch (Exception e) {
+            if (trans.isActive()) trans.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
 }
