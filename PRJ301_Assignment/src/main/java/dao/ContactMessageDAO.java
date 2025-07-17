@@ -2,6 +2,7 @@ package dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import java.util.List;
 import model.ContactMessage;
 import util.JPAUtil;
 
@@ -17,6 +18,15 @@ public class ContactMessageDAO {
             em.close();
         }
     }
+    public List<ContactMessage> getAll() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT m FROM ContactMessage m ORDER BY m.sentAt DESC", ContactMessage.class).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     public void save(ContactMessage message) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction trans = em.getTransaction();

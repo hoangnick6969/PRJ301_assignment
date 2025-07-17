@@ -1,17 +1,17 @@
-package controller;
+package controller.user;
 
-import dao.WishlistDAO;
+import dao.OrderDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.Customer;
-import model.Wishlist;
+import model.Order;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "WishlistServlet", urlPatterns = {"/wishlist"})
-public class WishlistServlet extends HttpServlet {
+@WebServlet(name = "OrderHistoryServlet", urlPatterns = {"/order-history"})
+public class OrderHistoryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -23,10 +23,10 @@ public class WishlistServlet extends HttpServlet {
             return;
         }
 
-        WishlistDAO wishlistDAO = new WishlistDAO();
-        List<Wishlist> wishlist = wishlistDAO.getByCustomer(customer);
+        OrderDAO orderDAO = new OrderDAO();
+        List<Order> orders = orderDAO.getByCustomer(customer);
 
-        request.setAttribute("wishlist", wishlist);
-        request.getRequestDispatcher("wishlist.jsp").forward(request, response);
+        request.setAttribute("orders", orders);
+        request.getRequestDispatcher("order-history.jsp").forward(request, response);
     }
 }

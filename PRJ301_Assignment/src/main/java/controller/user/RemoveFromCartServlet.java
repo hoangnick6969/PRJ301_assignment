@@ -1,4 +1,4 @@
-package controller;
+package controller.user;
 
 import dao.CartItemDAO;
 import jakarta.servlet.ServletException;

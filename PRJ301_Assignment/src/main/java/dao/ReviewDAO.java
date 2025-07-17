@@ -46,4 +46,13 @@ public class ReviewDAO {
             em.close();
         }
     }
+    public List<Review> getAll() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT r FROM Review r ORDER BY r.createdAt DESC", Review.class).getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-package controller;
+package controller.admin;
 
 import dao.BannerDAO;
 import jakarta.servlet.ServletException;

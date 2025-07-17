@@ -20,6 +20,16 @@ public class Coupon {
 
     private Date expiryDate;
 
+    public Coupon() {
+    }
+    
+    public Coupon(int id, String code, int discountPercent, Date expiryDate) {
+        this.id = id;
+        this.code = code;
+        this.discountPercent = discountPercent;
+        this.expiryDate = expiryDate;
+    }
+    
     public int getId() {
         return id;
     }
