@@ -1,26 +1,32 @@
 package controller.user;
 
-import dao.CartItemDAO;
+import dao.ProductDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import model.Product;
 
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet(name = "RemoveFromCartServlet", urlPatterns = {"/remove-from-cart"})
 public class RemoveFromCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            CartItemDAO cartItemDAO = new CartItemDAO();
-            cartItemDAO.delete(id);
-            response.sendRedirect("cart");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi xóa sản phẩm khỏi giỏ hàng");
+        int productId = Integer.parseInt(request.getParameter("productId"));
+
+        HttpSession session = request.getSession();
+        Map<Product, Integer> cart = (Map<Product, Integer>) session.getAttribute("cart");
+
+        if (cart != null) {
+            ProductDAO productDAO = new ProductDAO();
+            Product product = productDAO.findById(productId);
+            cart.remove(product);
+            session.setAttribute("cart", cart);
         }
+
+        response.sendRedirect(request.getContextPath() + "/cart");
     }
 }

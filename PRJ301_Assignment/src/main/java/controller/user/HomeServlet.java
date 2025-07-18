@@ -23,31 +23,30 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // 1. Load danh sách danh mục sản phẩm
+            // 1. Load danh mục cho header
             CategoryDAO categoryDAO = new CategoryDAO();
             List<Category> categories = categoryDAO.getAll();
             request.setAttribute("categories", categories);
 
-            // 2. Load danh sách sản phẩm (mới nhất hoặc tất cả)
+            // 2. Load sản phẩm mới nhất (hoặc nổi bật)
             ProductDAO productDAO = new ProductDAO();
-            List<Product> products = productDAO.getAll();  // Có thể thay bằng getLatest() nếu có
-            request.setAttribute("products", products);
+            List<Product> newProducts = productDAO.getNewest(8);  // cần viết getNewest() nếu chưa có
+            request.setAttribute("newProducts", newProducts);
 
-            // 3. Load banner vị trí trang chủ
+            // 3. Load banner cho slider trang chủ
             BannerDAO bannerDAO = new BannerDAO();
-            List<Banner> banners = bannerDAO.getByPosition("homepage-top");
+            List<Banner> banners = bannerDAO.getByPosition("homepage-slider");
             request.setAttribute("banners", banners);
 
-            // 4. Load bài viết blog/news
+            // 4. Load blog mới (nếu cần)
             BlogPostDAO blogPostDAO = new BlogPostDAO();
-            List<BlogPost> blogs = blogPostDAO.getAll();
+            List<BlogPost> blogs = blogPostDAO.getLatest(3); // optional
             request.setAttribute("blogs", blogs);
 
-            // 5. Forward tới view
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            // 5. Forward đến trang chủ
+            request.getRequestDispatcher("/user/home/index.jsp").forward(request, response);
 
         } catch (Exception e) {
-            // Ghi log lỗi nếu cần
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi tải trang chủ");
         }

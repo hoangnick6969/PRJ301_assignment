@@ -17,12 +17,19 @@ public class ProfileServlet extends HttpServlet {
 
         Customer customer = (Customer) request.getSession().getAttribute("user");
         if (customer == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
             return;
         }
 
         request.setAttribute("user", customer);
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
+
+        // Gửi thông báo nếu có ?success=1
+        String success = request.getParameter("success");
+        if ("1".equals(success)) {
+            request.setAttribute("success", "Cập nhật thành công!");
+        }
+
+        request.getRequestDispatcher("/user/profile/view.jsp").forward(request, response);
     }
 
     @Override
@@ -31,24 +38,22 @@ public class ProfileServlet extends HttpServlet {
 
         Customer customer = (Customer) request.getSession().getAttribute("user");
         if (customer == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
             return;
         }
 
         String name = request.getParameter("name");
-        String email = request.getParameter("email");
         String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
 
-        // Cập nhật
         customer.setName(name);
-        customer.setEmail(email);
         customer.setPhone(phone);
+        customer.setAddress(address);
 
         CustomerDAO dao = new CustomerDAO();
         dao.update(customer);
 
-        // Cập nhật lại session
         request.getSession().setAttribute("user", customer);
-        response.sendRedirect("profile.jsp?success=1");
+        response.sendRedirect("profile?success=1");
     }
 }

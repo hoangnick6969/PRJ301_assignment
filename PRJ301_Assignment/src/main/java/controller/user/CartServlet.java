@@ -1,36 +1,42 @@
 package controller.user;
 
-import dao.CartItemDAO;
+import dao.CategoryDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import model.CartItem;
-import model.Customer;
+import model.Category;
+import model.Product;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        try {
-            Customer customer = (Customer) request.getSession().getAttribute("user");
-            if (customer == null) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
+        HttpSession session = request.getSession();
 
-            CartItemDAO cartItemDAO = new CartItemDAO();
-            List<CartItem> cartItems = cartItemDAO.getByCustomer(customer);
-            request.setAttribute("cart", cartItems);
-            request.getRequestDispatcher("cart.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi hiển thị giỏ hàng");
+        // Lấy giỏ hàng từ session
+        Map<Product, Integer> cart = (Map<Product, Integer>) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new LinkedHashMap<>();
         }
+
+        // Tính tổng tiền
+        double total = cart.entrySet().stream()
+                .mapToDouble(e -> e.getKey().getPrice() * e.getValue())
+                .sum();
+
+        // Danh mục cho header
+        CategoryDAO categoryDAO = new CategoryDAO();
+        List<Category> categories = categoryDAO.getAll();
+        request.setAttribute("categories", categories);
+
+        request.setAttribute("cart", cart);
+        request.setAttribute("total", total);
+        request.getRequestDispatcher("/user/cart/view.jsp").forward(request, response);
     }
 }

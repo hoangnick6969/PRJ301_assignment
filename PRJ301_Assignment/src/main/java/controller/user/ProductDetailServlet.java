@@ -9,34 +9,37 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.Category;
 import model.Product;
+import model.ProductImage;
 import model.Review;
 
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "ProductDetailServlet", urlPatterns = {"/product"})
+@WebServlet(name = "ProductDetailServlet", urlPatterns = {"/product-detail"})
 public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int pid = Integer.parseInt(request.getParameter("id"));
+            int id = Integer.parseInt(request.getParameter("id"));
 
             ProductDAO productDAO = new ProductDAO();
-            CategoryDAO categoryDAO = new CategoryDAO();
-            ReviewDAO reviewDAO = new ReviewDAO();
             ProductImageDAO imageDAO = new ProductImageDAO();
+            ReviewDAO reviewDAO = new ReviewDAO();
+            CategoryDAO categoryDAO = new CategoryDAO();
 
-            Product product = productDAO.findById(pid);
+            Product product = productDAO.findById(id);
+            List<ProductImage> images = imageDAO.getByProductId(id);
+            List<Review> reviews = reviewDAO.getByProductId(id);
             List<Category> categories = categoryDAO.getAll();
-            List<Review> reviews = reviewDAO.getByProduct(product);
 
             request.setAttribute("product", product);
-            request.setAttribute("categories", categories);
+            request.setAttribute("images", images);
             request.setAttribute("reviews", reviews);
-            request.setAttribute("images", imageDAO.getByProduct(product));
+            request.setAttribute("categories", categories);
 
-            request.getRequestDispatcher("productDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("/user/product/detail.jsp").forward(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi tải chi tiết sản phẩm");

@@ -22,13 +22,21 @@ public class ProductListServlet extends HttpServlet {
             CategoryDAO categoryDAO = new CategoryDAO();
             ProductDAO productDAO = new ProductDAO();
 
+            // Lấy tất cả danh mục (dùng cho menu header)
             List<Category> categories = categoryDAO.getAll();
-            List<Product> products = productDAO.getByCategory(cid);
-
             request.setAttribute("categories", categories);
+
+            // Lấy danh mục hiện tại
+            Category category = categoryDAO.findById(cid);
+            request.setAttribute("category", category);
+
+            // Lấy danh sách sản phẩm thuộc danh mục đó
+            List<Product> products = productDAO.getByCategory(cid);
             request.setAttribute("products", products);
 
-            request.getRequestDispatcher("products.jsp").forward(request, response);
+            // Forward tới view
+            request.getRequestDispatcher("/user/product/list.jsp").forward(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi tải danh sách sản phẩm");

@@ -50,13 +50,13 @@ public class AdminBlogServlet extends HttpServlet {
 
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        
+        String thumbnail = (String) request.getAttribute("thumbnail");
 
         BlogPost blog = new BlogPost();
         blog.setId(id);
         blog.setTitle(title);
         blog.setContent(content);
-        
+        blog.setThumbnail(thumbnail);
         blog.setCreatedAt(new Date());
 
         if (id == 0) {

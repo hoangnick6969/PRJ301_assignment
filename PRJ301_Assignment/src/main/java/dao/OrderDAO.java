@@ -19,16 +19,7 @@ public class OrderDAO {
             em.close();
         }
     }
-    public List<Order> getByCustomer(Customer customer) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            return em.createQuery("SELECT o FROM Order o WHERE o.customer.id = :cid ORDER BY o.orderDate DESC", Order.class)
-                    .setParameter("cid", customer.getId())
-                    .getResultList();
-        } finally {
-            em.close();
-        }
-    }
+    
     public List<Order> getAll() {
         EntityManager em = JPAUtil.getEntityManager();
         return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
@@ -63,6 +54,12 @@ public class OrderDAO {
         } finally {
             em.close();
         }
+    }
+    public List<Order> getByCustomer(Customer customer) {
+        EntityManager em = JPAUtil.getEntityManager();
+        return em.createQuery("SELECT o FROM Order o WHERE o.customer.id = :cid ORDER BY o.orderDate DESC", Order.class)
+                 .setParameter("cid", customer.getId())
+                 .getResultList();
     }
 
 }

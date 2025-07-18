@@ -72,4 +72,11 @@ public class BlogPostDAO {
             em.close();
         }
     }
+    public List<BlogPost> getLatest(int limit) {
+        EntityManager em = JPAUtil.getEntityManager();
+        return em.createQuery("SELECT b FROM BlogPost b ORDER BY b.createdAt DESC", BlogPost.class)
+                 .setMaxResults(limit)
+                 .getResultList();
+    }
+
 }

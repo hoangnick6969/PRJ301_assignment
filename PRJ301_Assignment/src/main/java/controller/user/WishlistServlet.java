@@ -1,11 +1,13 @@
 package controller.user;
 
 import dao.WishlistDAO;
+import dao.CategoryDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+import model.Category;
 import model.Customer;
-import model.Wishlist;
+import model.Product;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,16 +19,24 @@ public class WishlistServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Customer customer = (Customer) request.getSession().getAttribute("user");
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+
         if (customer == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
             return;
         }
 
+        // Lấy danh sách sản phẩm yêu thích
         WishlistDAO wishlistDAO = new WishlistDAO();
-        List<Wishlist> wishlist = wishlistDAO.getByCustomer(customer);
-
+        List<Product> wishlist = wishlistDAO.getProductsByCustomerId(customer.getId());
         request.setAttribute("wishlist", wishlist);
-        request.getRequestDispatcher("wishlist.jsp").forward(request, response);
+
+        // Gửi danh mục cho menu
+        CategoryDAO categoryDAO = new CategoryDAO();
+        List<Category> categories = categoryDAO.getAll();
+        request.setAttribute("categories", categories);
+
+        request.getRequestDispatcher("/user/wishlist/view.jsp").forward(request, response);
     }
 }

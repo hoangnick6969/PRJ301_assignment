@@ -54,5 +54,12 @@ public class ReviewDAO {
             em.close();
         }
     }
+    public List<Review> getByProductId(int productId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        return em.createQuery("SELECT r FROM Review r WHERE r.product.id = :pid ORDER BY r.createdAt DESC", Review.class)
+                 .setParameter("pid", productId)
+                 .getResultList();
+    }
+   
 
 }

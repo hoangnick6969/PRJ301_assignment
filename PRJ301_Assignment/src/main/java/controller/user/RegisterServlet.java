@@ -22,13 +22,26 @@ public class RegisterServlet extends HttpServlet {
             customer.setAddress(request.getParameter("address"));
 
             CustomerDAO dao = new CustomerDAO();
-            dao.insert(customer);
 
-            response.sendRedirect("login.jsp");
+            // Kiểm tra email trùng
+            if (dao.findByEmail(customer.getEmail()) != null) {
+                request.setAttribute("error", "Email đã được sử dụng!");
+                request.getRequestDispatcher("/user/auth/register.jsp").forward(request, response);
+                return;
+            }
+
+            dao.insert(customer);
+            response.sendRedirect("login");
 
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi đăng ký tài khoản");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        request.getRequestDispatcher("/user/auth/register.jsp").forward(request, response);
     }
 }

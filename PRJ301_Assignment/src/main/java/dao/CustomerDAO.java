@@ -34,6 +34,7 @@ public class CustomerDAO {
         }
     }
 
+
     public void insert(Customer c) {
         EntityManager em = JPAUtil.getEntityManager();
         try {

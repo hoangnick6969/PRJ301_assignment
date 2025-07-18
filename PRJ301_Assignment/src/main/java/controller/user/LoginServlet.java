@@ -25,12 +25,18 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("home");
             } else {
                 request.setAttribute("error", "Sai email hoặc mật khẩu");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("/user/auth/login.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi đăng nhập");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        request.getRequestDispatcher("/user/auth/login.jsp").forward(request, response);
     }
 }

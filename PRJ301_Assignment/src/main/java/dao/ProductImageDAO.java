@@ -21,5 +21,11 @@ public class ProductImageDAO {
             em.close();
         }
     }
-    
+    public List<ProductImage> getByProductId(int productId) {
+    EntityManager em = JPAUtil.getEntityManager();
+    return em.createQuery("SELECT i FROM ProductImage i WHERE i.product.id = :pid", ProductImage.class)
+             .setParameter("pid", productId)
+             .getResultList();
+}
+
 }

@@ -55,4 +55,24 @@ public class WishlistDAO {
             em.close();
         }
     }
+    public List<Product> getProductsByCustomerId(int customerId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        return em.createQuery(
+            "SELECT w.product FROM Wishlist w WHERE w.customer.id = :cid", Product.class)
+            .setParameter("cid", customerId)
+            .getResultList();
+    }
+    public void delete(int customerId, int productId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        em.getTransaction().begin();
+
+        em.createQuery("DELETE FROM Wishlist w WHERE w.customer.id = :cid AND w.product.id = :pid")
+          .setParameter("cid", customerId)
+          .setParameter("pid", productId)
+          .executeUpdate();
+
+        em.getTransaction().commit();
+        em.close();
+    }
+
 }

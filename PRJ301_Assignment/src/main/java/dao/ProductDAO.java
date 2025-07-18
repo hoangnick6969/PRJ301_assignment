@@ -5,6 +5,9 @@ import model.Product;
 import util.JPAUtil;
 
 import java.util.List;
+import model.BlogPost;
+import model.ProductImage;
+import model.Review;
 
 public class ProductDAO {
     public List<Product> getAll() {
@@ -35,16 +38,7 @@ public class ProductDAO {
             em.close();
         }
     }
-    public List<Product> getLatest(int limit) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            return em.createQuery("SELECT p FROM Product p ORDER BY p.id DESC", Product.class)
-                     .setMaxResults(limit)
-                     .getResultList();
-        } finally {
-            em.close();
-        }
-    }
+    
     public List<Product> searchByKeyword(String keyword) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -117,5 +111,19 @@ public class ProductDAO {
             em.close();
         }
     }
+    public List<Product> getNewest(int limit) {
+        EntityManager em = JPAUtil.getEntityManager();
+        return em.createQuery("SELECT p FROM Product p ORDER BY p.id DESC", Product.class)
+                 .setMaxResults(limit)
+                 .getResultList();
+    }
+    public List<BlogPost> getLatest(int limit) {
+        EntityManager em = JPAUtil.getEntityManager();
+        return em.createQuery("SELECT b FROM BlogPost b ORDER BY b.createdAt DESC", BlogPost.class)
+                 .setMaxResults(limit)
+                 .getResultList();
+    }
+    
+
 
 }

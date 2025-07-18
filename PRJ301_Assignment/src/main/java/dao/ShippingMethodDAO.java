@@ -26,4 +26,6 @@ public class ShippingMethodDAO {
             em.close();
         }
     }
+    
+
 }
