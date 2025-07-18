@@ -24,6 +24,9 @@ public class Order {
     @Column(nullable = false)
     private double total;
 
+    @Column(length = 50, nullable = false)
+    private String status; // ✅ thêm trạng thái
+
     @ManyToOne
     @JoinColumn(name = "shippingMethodId")
     private ShippingMethod shippingMethod;
@@ -34,6 +37,8 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> details;
+
+    // Nếu không dùng Lombok hoàn toàn, có thể giữ getter/setter thủ công như sau:
 
     public int getId() {
         return id;
@@ -67,6 +72,14 @@ public class Order {
         this.total = total;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public ShippingMethod getShippingMethod() {
         return shippingMethod;
     }
@@ -90,5 +103,4 @@ public class Order {
     public void setDetails(List<OrderDetail> details) {
         this.details = details;
     }
-    
 }
