@@ -35,7 +35,7 @@ public class ProductListServlet extends HttpServlet {
             request.setAttribute("products", products);
 
             // Forward tới view
-            request.getRequestDispatcher("/user/product/list.jsp").forward(request, response);
+            request.getRequestDispatcher("views/user/product/list.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

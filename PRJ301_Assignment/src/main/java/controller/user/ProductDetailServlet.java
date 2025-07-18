@@ -38,7 +38,7 @@ public class ProductDetailServlet extends HttpServlet {
             request.setAttribute("reviews", reviews);
             request.setAttribute("categories", categories);
 
-            request.getRequestDispatcher("/user/product/detail.jsp").forward(request, response);
+            request.getRequestDispatcher("views/user/product/detail.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

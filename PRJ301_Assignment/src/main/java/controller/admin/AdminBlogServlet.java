@@ -23,21 +23,22 @@ public class AdminBlogServlet extends HttpServlet {
 
         if (action == null) {
             List<BlogPost> list = blogDAO.getAll();
-            request.setAttribute("blogs", list);
-            request.getRequestDispatcher("/admin/blog-list.jsp").forward(request, response);
+            request.setAttribute("blogList", list);
+            request.getRequestDispatcher("/views/admin/blog/list.jsp").forward(request, response);
 
-        } else if (action.equals("edit")) {
+        } else if ("edit".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             BlogPost blog = blogDAO.findById(id);
             request.setAttribute("blog", blog);
-            request.getRequestDispatcher("/admin/blog-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/blog/form.jsp").forward(request, response);
 
-        } else if (action.equals("delete")) {
+        } else if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             blogDAO.delete(id);
             response.sendRedirect("blogs");
-        } else if (action.equals("add")) {
-            request.getRequestDispatcher("/admin/blog-form.jsp").forward(request, response);
+
+        } else if ("add".equals(action)) {
+            request.getRequestDispatcher("/views/admin/blog/form.jsp").forward(request, response);
         }
     }
 
@@ -50,7 +51,7 @@ public class AdminBlogServlet extends HttpServlet {
 
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        String thumbnail = (String) request.getAttribute("thumbnail");
+        String thumbnail = request.getParameter("thumbnail");
 
         BlogPost blog = new BlogPost();
         blog.setId(id);

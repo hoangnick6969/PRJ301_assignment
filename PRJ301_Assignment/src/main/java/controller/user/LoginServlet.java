@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("home");
             } else {
                 request.setAttribute("error", "Sai email hoặc mật khẩu");
-                request.getRequestDispatcher("/user/auth/login.jsp").forward(request, response);
+                request.getRequestDispatcher("views/user/auth/login.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
@@ -37,6 +37,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        request.getRequestDispatcher("/user/auth/login.jsp").forward(request, response);
+        request.getRequestDispatcher("views/user/auth/login.jsp").forward(request, response);
     }
 }

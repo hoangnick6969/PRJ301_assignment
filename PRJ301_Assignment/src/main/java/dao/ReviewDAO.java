@@ -34,7 +34,17 @@ public class ReviewDAO {
             em.close();
         }
     }
-
+    public List<Review> findByProductId(int productId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Review> query = em.createQuery(
+                "SELECT r FROM Review r WHERE r.product.id = :productId ORDER BY r.id DESC", Review.class);
+            query.setParameter("productId", productId);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
     public List<Review> getByProduct(Product product) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -61,5 +71,28 @@ public class ReviewDAO {
                  .getResultList();
     }
    
+    public Review findById(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Review.class, id);
+        } finally {
+            em.close();
+        }
+    }
 
+    public void delete(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Review r = em.find(Review.class, id);
+            if (r != null) {
+                em.remove(r);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
 }
+
+    

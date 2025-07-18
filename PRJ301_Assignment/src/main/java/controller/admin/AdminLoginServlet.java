@@ -14,7 +14,7 @@ public class AdminLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/login.jsp").forward(request, response);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class AdminLoginServlet extends HttpServlet {
             response.sendRedirect("dashboard");
         } else {
             request.setAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng!");
-            request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
+            request.getRequestDispatcher("views/admin/login.jsp").forward(request, response);
         }
     }
 }

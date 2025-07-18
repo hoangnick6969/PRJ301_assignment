@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
             // Kiểm tra email trùng
             if (dao.findByEmail(customer.getEmail()) != null) {
                 request.setAttribute("error", "Email đã được sử dụng!");
-                request.getRequestDispatcher("/user/auth/register.jsp").forward(request, response);
+                request.getRequestDispatcher("views/user/auth/register.jsp").forward(request, response);
                 return;
             }
 
@@ -42,6 +42,6 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        request.getRequestDispatcher("/user/auth/register.jsp").forward(request, response);
+        request.getRequestDispatcher("views/user/auth/register.jsp").forward(request, response);
     }
 }

@@ -19,4 +19,15 @@ public class AdminUserDAO {
             em.close();
         }
     }
+    public void update(AdminUser admin) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(admin);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
 }

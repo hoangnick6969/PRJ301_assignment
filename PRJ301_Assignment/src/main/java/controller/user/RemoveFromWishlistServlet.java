@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.Customer;
-import model.Product;
 
 import java.io.IOException;
 
@@ -20,15 +19,20 @@ public class RemoveFromWishlistServlet extends HttpServlet {
         Customer customer = (Customer) session.getAttribute("user");
 
         if (customer == null) {
-            response.sendRedirect("login");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        int productId = Integer.parseInt(request.getParameter("productId"));
+        try {
+            int productId = Integer.parseInt(request.getParameter("productId"));
 
-        WishlistDAO dao = new WishlistDAO();
-        dao.delete(customer.getId(), productId);
+            WishlistDAO dao = new WishlistDAO();
+            dao.delete(customer.getId(), productId);
 
-        response.sendRedirect("wishlist");
+        } catch (NumberFormatException e) {
+            // Có thể log lỗi hoặc bỏ qua để tránh crash
+        }
+
+        response.sendRedirect(request.getContextPath() + "/wishlist");
     }
 }

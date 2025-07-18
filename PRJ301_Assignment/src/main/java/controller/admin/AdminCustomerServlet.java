@@ -19,7 +19,7 @@ public class AdminCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         List<Customer> customers = customerDAO.getAll();
-        request.setAttribute("customers", customers);
-        request.getRequestDispatcher("/admin/customer-list.jsp").forward(request, response);
+        request.setAttribute("customerList", customerDAO.getAll());
+        request.getRequestDispatcher("/views/admin/customer/list.jsp").forward(request, response);
     }
 }

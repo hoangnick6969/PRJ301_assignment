@@ -2,10 +2,12 @@
 package dao;
 
 import jakarta.persistence.*;
+import java.util.LinkedHashMap;
 import model.Order;
 import util.JPAUtil;
 
 import java.util.List;
+import java.util.Map;
 import model.Customer;
 
 public class OrderDAO {
@@ -60,6 +62,29 @@ public class OrderDAO {
         return em.createQuery("SELECT o FROM Order o WHERE o.customer.id = :cid ORDER BY o.orderDate DESC", Order.class)
                  .setParameter("cid", customer.getId())
                  .getResultList();
+    }
+    public Map<String, Double> getMonthlyRevenue(int lastMonths) {
+        EntityManager em = JPAUtil.getEntityManager();
+        Map<String, Double> map = new LinkedHashMap<>();
+        try {
+            List<Object[]> results = em.createQuery(
+                "SELECT FUNCTION('FORMAT', o.orderDate, 'MM-yyyy'), SUM(o.total) " +
+                "FROM Order o " +
+                "WHERE o.status != 'Hủy' " +
+                "GROUP BY FUNCTION('FORMAT', o.orderDate, 'MM-yyyy') " +
+                "ORDER BY FUNCTION('FORMAT', o.orderDate, 'yyyy-MM') DESC"
+            ).setMaxResults(lastMonths).getResultList();
+
+            for (Object[] row : results) {
+                String month = (String) row[0];
+                Double total = (Double) row[1];
+                map.put(month, total);
+            }
+
+            return map;
+        } finally {
+            em.close();
+        }
     }
 
 }

@@ -22,21 +22,22 @@ public class AdminBannerServlet extends HttpServlet {
 
         if (action == null) {
             List<Banner> list = bannerDAO.getAll();
-            request.setAttribute("banners", list);
-            request.getRequestDispatcher("/admin/banner-list.jsp").forward(request, response);
+            request.setAttribute("bannerList", list);
+            request.getRequestDispatcher("/views/admin/banner/list.jsp").forward(request, response);
 
         } else if (action.equals("edit")) {
             int id = Integer.parseInt(request.getParameter("id"));
             Banner banner = bannerDAO.findById(id);
             request.setAttribute("banner", banner);
-            request.getRequestDispatcher("/admin/banner-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/banner/form.jsp").forward(request, response);
 
         } else if (action.equals("delete")) {
             int id = Integer.parseInt(request.getParameter("id"));
             bannerDAO.delete(id);
             response.sendRedirect("banners");
+
         } else if (action.equals("add")) {
-            request.getRequestDispatcher("/admin/banner-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/banner/form.jsp").forward(request, response);
         }
     }
 

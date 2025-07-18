@@ -8,16 +8,7 @@ import util.JPAUtil;
 
 public class ContactMessageDAO {
 
-    public void insert(ContactMessage msg) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(msg);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-    }
+    
     public List<ContactMessage> getAll() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -38,6 +29,39 @@ public class ContactMessageDAO {
         } catch (Exception e) {
             if (trans.isActive()) trans.rollback();
             e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+    public ContactMessage findById(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(ContactMessage.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public void delete(int id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            ContactMessage m = em.find(ContactMessage.class, id);
+            if (m != null) {
+                em.remove(m);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    public void insert(ContactMessage m) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(m);
+            em.getTransaction().commit();
         } finally {
             em.close();
         }

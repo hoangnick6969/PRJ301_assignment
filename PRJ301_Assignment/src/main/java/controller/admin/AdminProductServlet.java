@@ -24,10 +24,9 @@ public class AdminProductServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action == null) {
-            // Mặc định: hiển thị danh sách sản phẩm
             List<Product> list = productDAO.getAll();
-            request.setAttribute("products", list);
-            request.getRequestDispatcher("/admin/product-list.jsp").forward(request, response);
+            request.setAttribute("productList", list); // đúng tên biến trong JSP
+            request.getRequestDispatcher("/views/admin/product/list.jsp").forward(request, response);
 
         } else if (action.equals("edit")) {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -36,20 +35,22 @@ public class AdminProductServlet extends HttpServlet {
 
             request.setAttribute("product", p);
             request.setAttribute("categories", categories);
-            request.getRequestDispatcher("/admin/product-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/product/form.jsp").forward(request, response);
 
         } else if (action.equals("delete")) {
             int id = Integer.parseInt(request.getParameter("id"));
             productDAO.delete(id);
             response.sendRedirect("products");
+
         } else if (action.equals("add")) {
             List<Category> categories = categoryDAO.getAll();
             request.setAttribute("categories", categories);
-            request.getRequestDispatcher("/admin/product-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/product/form.jsp").forward(request, response);
         }
     }
 
-    @Override
+
+  @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -59,7 +60,7 @@ public class AdminProductServlet extends HttpServlet {
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         double price = Double.parseDouble(request.getParameter("price"));
-        String image = request.getParameter("image");
+        String image = request.getParameter("mainImage"); // SỬA LẠI CHO KHỚP
         int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 
         Product p = new Product();
@@ -78,4 +79,5 @@ public class AdminProductServlet extends HttpServlet {
 
         response.sendRedirect("products");
     }
+
 }

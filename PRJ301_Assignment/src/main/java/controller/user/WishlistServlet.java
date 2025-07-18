@@ -37,6 +37,6 @@ public class WishlistServlet extends HttpServlet {
         List<Category> categories = categoryDAO.getAll();
         request.setAttribute("categories", categories);
 
-        request.getRequestDispatcher("/user/wishlist/view.jsp").forward(request, response);
+        request.getRequestDispatcher("views/user/wishlist/view.jsp").forward(request, response);
     }
 }

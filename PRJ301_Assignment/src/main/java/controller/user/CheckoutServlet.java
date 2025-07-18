@@ -33,7 +33,7 @@ public class CheckoutServlet extends HttpServlet {
         request.setAttribute("paymentMethods", paymentMethods);
         request.setAttribute("categories", categories);
 
-        request.getRequestDispatcher("/user/order/checkout.jsp").forward(request, response);
+        request.getRequestDispatcher("views/user/order/checkout.jsp").forward(request, response);
     }
 
     @Override

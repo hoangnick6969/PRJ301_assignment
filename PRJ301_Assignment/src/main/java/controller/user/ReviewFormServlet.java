@@ -10,7 +10,7 @@ import model.Product;
 import java.io.IOException;
 
 @WebServlet(name = "ReviewFormServlet", urlPatterns = {"/review-form"})
-    public class ReviewFormServlet extends HttpServlet {
+public class ReviewFormServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -20,7 +20,7 @@ import java.io.IOException;
         Customer customer = (Customer) session.getAttribute("user");
 
         if (customer == null) {
-            response.sendRedirect("login");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
@@ -29,12 +29,16 @@ import java.io.IOException;
             ProductDAO productDAO = new ProductDAO();
             Product product = productDAO.findById(productId);
 
-            request.setAttribute("product", product);
-            request.getRequestDispatcher("/user/review/submit.jsp").forward(request, response);
+            if (product == null) {
+                response.sendRedirect(request.getContextPath() + "/home");
+                return;
+            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect("home");
+            request.setAttribute("product", product);
+            request.getRequestDispatcher("/views/user/review/submit.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            response.sendRedirect(request.getContextPath() + "/home");
         }
     }
 }

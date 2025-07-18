@@ -22,7 +22,7 @@ public class OrderHistoryServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("user");
         if (customer == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("views/user/auth/login.jsp");
             return;
         }
 
@@ -37,6 +37,6 @@ public class OrderHistoryServlet extends HttpServlet {
         request.setAttribute("categories", categories);
 
         // Chuyển đến giao diện lịch sử đơn hàng
-        request.getRequestDispatcher("/user/order/history.jsp").forward(request, response);
+        request.getRequestDispatcher("views/user/order/history.jsp").forward(request, response);
     }
 }

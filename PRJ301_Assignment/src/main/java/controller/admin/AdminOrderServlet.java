@@ -26,17 +26,17 @@ public class AdminOrderServlet extends HttpServlet {
         if (action == null) {
             // Hiển thị danh sách đơn hàng
             List<Order> orders = orderDAO.getAll();
-            request.setAttribute("orders", orders);
-            request.getRequestDispatcher("/admin/order-list.jsp").forward(request, response);
+            request.setAttribute("orderList", orders);
+            request.getRequestDispatcher("/views/admin/order/list.jsp").forward(request, response);
 
-        } else if (action.equals("view")) {
+        } else if (action.equals("detail")) {
             int id = Integer.parseInt(request.getParameter("id"));
             Order order = orderDAO.findById(id);
             List<OrderDetail> details = orderDetailDAO.getByOrder(order);
 
             request.setAttribute("order", order);
-            request.setAttribute("details", details);
-            request.getRequestDispatcher("/admin/order-detail.jsp").forward(request, response);
+            request.setAttribute("orderDetails", details);
+            request.getRequestDispatcher("/views/admin/order/detail.jsp").forward(request, response);
 
         } else if (action.equals("updateStatus")) {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -50,3 +50,4 @@ public class AdminOrderServlet extends HttpServlet {
         }
     }
 }
+    
