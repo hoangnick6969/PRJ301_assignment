@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="/views/common/header.jsp" />
+<jsp:include page="../../common/header.jsp" />
 
 <h2>🔍 Kết quả tìm kiếm cho từ khóa: <em>${param.keyword}</em></h2>
 
@@ -23,5 +23,5 @@
         </div>
     </c:otherwise>
 </c:choose>
-
-<jsp:include page="/views/common/footer.jsp" />
+        
+<jsp:include page="../../common/footer.jsp" />

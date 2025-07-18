@@ -1,7 +1,8 @@
     <%@ page contentType="text/html;charset=UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="views/common/header.jsp" />
+<jsp:include page="../../common/header.jsp" />
+
 
     <h2>🛒 Giỏ hàng của bạn</h2>
 
@@ -52,4 +53,4 @@
         </c:otherwise>
     </c:choose>
 
-<jsp:include page="views/common/header.jsp" />
+<jsp:include page="../../common/footer.jsp" />

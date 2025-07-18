@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="/views/common/header.jsp" />
+<jsp:include page="../../common/header.jsp" />
 
 <h2>👤 Thông tin tài khoản</h2>
 
@@ -28,4 +28,4 @@
     <button type="submit">💾 Cập nhật</button>
 </form>
 
-<jsp:include page="/views/common/footer.jsp" />
+<jsp:include page="../../common/footer.jsp" />

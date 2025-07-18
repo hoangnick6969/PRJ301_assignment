@@ -10,11 +10,7 @@
     <li><strong>Tổng người dùng:</strong> ${customerCount}</li>
 </ul>
 
-<hr/><ul>
-    <li><strong>Tổng số sản phẩm:</strong> ${productCount}</li>
-    <li><strong>Tổng đơn hàng:</strong> ${orderCount}</li>
-    <li><strong>Tổng người dùng:</strong> ${customerCount}</li>
-</ul>
+<hr/>
 
 <h3>📈 Doanh thu 6 tháng gần nhất</h3>
 <canvas id="revenueChart" width="800" height="300"></canvas>

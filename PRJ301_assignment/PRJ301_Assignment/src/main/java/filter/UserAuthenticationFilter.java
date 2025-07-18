@@ -25,7 +25,8 @@ public class UserAuthenticationFilter implements Filter {
         if (loggedIn) {
             chain.doFilter(request, response);
         } else {
-            res.sendRedirect(req.getContextPath() + "/views/user/auth/login.jsp");
+            // ✅ Đổi lại đường dẫn đến LoginServlet
+            res.sendRedirect(req.getContextPath() + "/login");
         }
     }
 
@@ -35,3 +36,4 @@ public class UserAuthenticationFilter implements Filter {
     @Override
     public void destroy() {}
 }
+
