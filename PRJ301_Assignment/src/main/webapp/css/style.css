@@ -1,0 +1,468 @@
+/* ======= RESET & BODY ======= */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #fafcff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* ======= TOPBAR ======= */
+.topbar {
+    background: #111;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 36px;
+    height: 40px;
+    font-size: 1rem;
+    font-family: 'Montserrat', Arial, sans-serif;
+    /* XÓA position: sticky/fixed để không che footer */
+    position: static;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1;
+}
+.topbar .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 40px;
+    min-width: 100px;
+    padding-left: 4px;
+}
+.topbar-logo {
+    height: 30px;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    filter: drop-shadow(0 2px 7px rgba(0,0,0,0.13));
+    object-fit: contain;
+}
+.brand-text {
+    color: #fff;
+    font-size: 1.18rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    vertical-align: middle;
+}
+
+/* ======= HEADER ======= */
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 0 32px;
+    height: 120px;
+    border-bottom: 1px solid #eaeaea;
+    position: static; /* XÓA sticky/fixed, header không che footer */
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 16px;
+    z-index: 1;
+}
+.logo-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    background: transparent;
+    padding: 0 30px;
+}
+.logo-center .main-logo-img {
+    max-height: 110px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 14px rgba(0,0,0,0.11));
+    max-width: 180px;
+}
+.logo-img {
+    height: 36px;
+    width: auto;
+    display: block;
+}
+
+.main-header nav ul, nav ul {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.main-header nav ul {
+    gap: 36px;
+}
+.main-header nav a, nav a {
+    color: #111;
+    text-decoration: none;
+    font-size: 1.13rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: color 0.18s;
+    white-space: nowrap;
+}
+.main-header nav a:hover {
+    color: #ff6500;
+}
+
+/* ======= USER MENU ======= */
+.user-menu {
+    font-size: 1rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.user-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.user-menu a:hover {
+    color: #ff6500;
+}
+.user-menu i {
+    margin-right: 3px;
+}
+
+/* ======= HERO (Banner) ======= */
+.hero {
+    position: relative;
+    width: 100%;
+    min-height: 530px;
+    overflow: hidden;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+.hero-bg {
+    width: 100%;
+    height: 530px;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+    z-index: 1;
+}
+.hero-content {
+    position: absolute;
+    top: 35%;
+    left: 10vw;
+    z-index: 2;
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.hero-content h1 {
+    font-size: 3.2rem;
+    font-weight: bold;
+    margin: 0 0 32px 0;
+    line-height: 1.05;
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 18px rgba(0,0,0,0.11);
+}
+.btn-orange {
+    background: #ff6500;
+    color: #fff;
+    border: none;
+    font-size: 1.13rem;
+    padding: 16px 38px;
+    border-radius: 28px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 3px 14px rgba(255,101,0,0.13);
+    transition: background 0.22s;
+}
+.btn-orange:hover {
+    background: #ff3000;
+}
+
+/* ======= FOOTER ======= */
+.footer-main {
+    background: #181818;
+    color: #fff;
+    padding: 48px 0 0 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin-top: 32px;
+}
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    padding: 0 36px 0 64px;  /* 64px trái, 36px phải */
+    border-bottom: 1px solid #333;
+    padding-bottom: 36px;
+}
+.footer-col {
+    flex: 1 1 190px;
+    min-width: 180px;
+    margin-bottom: 20px;
+}
+.footer-logo {
+    max-width: 130px;
+    margin-bottom: 18px;
+    filter: brightness(5) grayscale(1); /* Cho logo trắng, nếu là ảnh đen */
+}
+.footer-signup-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+.newsletter-form .newsletter-row {
+    display: flex;
+    gap: 0;
+}
+.newsletter-form input[type="email"] {
+    flex: 1;
+    padding: 12px;
+    border-radius: 3px 0 0 3px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+}
+.newsletter-form button {
+    padding: 12px 24px;
+    border: none;
+    background: #ff4040;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.18s;
+}
+.newsletter-form button:hover {
+    background: #e92c2c;
+}
+.footer-msg {
+    color: #44ef9b;
+    font-size: 1rem;
+    margin-top: 7px;
+}
+.footer-contact {
+    margin-top: 14px;
+    font-size: 0.97rem;
+}
+.footer-contact a {
+    color: #ff4040;
+    text-decoration: underline;
+}
+.footer-contact a:hover {
+    color: #fff;
+}
+.footer-col h4 {
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+.footer-col ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.footer-col ul li {
+    margin-bottom: 7px;
+}
+.footer-col ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    opacity: 0.92;
+    transition: color 0.17s;
+}
+.footer-col ul li a:hover {
+    color: #ff4040;
+}
+.footer-bottom {
+    max-width: 1200px;
+    margin: 24px auto 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 36px 8px 36px;
+    flex-wrap: wrap;
+}
+.footer-social {
+    display: flex;
+    gap: 17px;
+    font-size: 1.45rem;
+}
+.footer-social a {
+    color: #fff;
+    opacity: 0.93;
+    transition: color 0.18s, opacity 0.18s;
+}
+.footer-social a:hover {
+    color: #ff4040;
+    opacity: 1;
+}
+.footer-copyright {
+    margin: 0;
+    font-size: 0.97rem;
+    opacity: 0.78;
+}
+/* ======= Responsive Fix ======= */
+@media (max-width: 900px) {
+    .main-header, .topbar {
+        padding: 0 10px;
+    }
+    .logo-center .main-logo-img {
+        max-height: 110px;
+        max-width: 120px;
+    }
+    .hero-content h1 {
+        font-size: 2.1rem;
+    }
+    .btn-orange {
+        font-size: 1rem;
+        padding: 10px 22px;
+    }
+    .footer-container {
+        flex-direction: column;
+        padding: 0 18px;
+        gap: 12px;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 18px 8px 18px;
+        gap: 10px;
+    }
+    .footer-social {
+        margin-bottom: 6px;
+    }
+}
+@media (max-width: 650px) {
+    .main-header nav ul, .topbar .topbar-right {
+        gap: 10px;
+    }
+    .logo-center {
+        padding: 0 2vw;
+        height: 42px;
+    }
+    .logo-center .main-logo-img {
+        max-height: 28px;
+        max-width: 100px;
+    }
+    .hero-content {
+        left: 5vw;
+        top: 18%;
+    }
+    .hero-bg {
+        height: 220px;
+    }
+}
+@media (max-width: 500px) {
+    .footer-main {
+        padding-top: 18px;
+    }
+    .footer-logo {
+        max-width: 86px;
+    }
+    .newsletter-form .newsletter-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .newsletter-form input[type="email"],
+    .newsletter-form button {
+        border-radius: 3px;
+        width: 100%;
+        font-size: 0.98rem;
+        padding: 10px 0;
+    }
+}
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* khoảng cách giữa các cột */
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: nowrap; /* không xuống hàng */
+}
+
+.footer-col {
+  flex: 1 1 0; /* mỗi cột chiếm 1 phần bằng nhau */
+  min-width: 0; /* để tránh bị rộng quá */
+}
+
+/* Nếu chữ trong cột quá dài, sẽ tự xuống hàng trong cột */
+.footer-col p, 
+.footer-col ul {
+  white-space: normal;
+}
+.footer-main {
+  padding-bottom: 0; /* bỏ khoảng cách dưới footer */
+  margin-bottom: 0;
+}
+
+.footer-container {
+  padding-bottom: 0; /* bỏ padding dưới */
+  margin-bottom: 0;
+}
+.footer-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 20px !important; /* khoảng cách giữa các cột */
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  flex-wrap: nowrap !important; /* không xuống hàng */
+  align-items: center !important; /* căn giữa các cột theo chiều dọc */
+}
+
+.footer-col {
+  flex: 1 1 0 !important; /* mỗi cột chiếm 1 phần bằng nhau */
+  min-width: 0 !important; /* để tránh bị rộng quá */
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important; /* căn giữa theo chiều dọc */
+}
+
+.footer-form {
+  max-width: 300px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important; /* căn giữa phần form theo chiều dọc */
+}
+.footer-container {
+  display: flex;
+  flex-wrap: wrap; /* cho phép xuống hàng */
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.footer-right-group {
+  display: flex;
+  gap: 40px;
+  flex: 1 1 100%;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.footer-right-group > .footer-col {
+  flex: 1 1 0;
+  min-width: 180px;
+}
+
+.footer-info-store {
+  flex: 1 1 100%; /* chiếm hết hàng mới */
+  margin-top: 0;
+}

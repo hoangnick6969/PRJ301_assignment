@@ -1,32 +1,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<!-- Header -->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>FashionShop</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    
 </head>
 <body>
-<header>
-    <div class="logo">
-        <a href="${pageContext.request.contextPath}/home">👗 FashionShop</a>
-    </div>
+<!-- TOP BLACK BAR -->
+<div class="topbar">
+   <div class="topbar-left">
+    <span class="brand-text">FashionShop</span>
+</div>
 
-    <nav>
-        <ul>
-            <li><a href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
-            <c:forEach var="cate" items="${categories}">
-                <li><a href="${pageContext.request.contextPath}/products?cid=${cate.id}">${cate.name}</a></li>
-            </c:forEach>
-            <li><a href="${pageContext.request.contextPath}/blog">Blog</a></li>
-            <li><a href="${pageContext.request.contextPath}/contact">Liên hệ</a></li>
-        </ul>
-    </nav>
 
-    <div class="user-menu">
+    <div class="topbar-right user-menu">
         <c:choose>
             <c:when test="${not empty sessionScope.user}">
                 <span>Xin chào, ${sessionScope.user.name}</span> |
@@ -38,8 +29,40 @@
                 <a href="${pageContext.request.contextPath}/register">Đăng ký</a>
             </c:otherwise>
         </c:choose>
-        | <a href="${pageContext.request.contextPath}/cart">🛒 Giỏ hàng</a>
-        | <a href="${pageContext.request.contextPath}/wishlist">❤ Yêu thích</a>
+        | <a href="${pageContext.request.contextPath}/cart"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a>
+        | <a href="${pageContext.request.contextPath}/wishlist"><i class="fa fa-heart"></i> Yêu thích</a>
     </div>
+</div>
+
+<!-- HEADER MENU -->
+<header class="main-header">
+    <nav>
+        <ul>
+            <li><a href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
+            <c:forEach var="cate" items="${categories}">
+                <li><a href="${pageContext.request.contextPath}/products?cid=${cate.id}">${cate.name}</a></li>
+            </c:forEach>
+        </ul>
+    </nav>
+    <div class="logo-center">
+    <img src="${pageContext.request.contextPath}/img/logo.png" alt="FashionShop Logo" class="main-logo-img">
+</div>
+
+    <nav>
+        <ul>
+            <li><a href="${pageContext.request.contextPath}/blog">Blog</a></li>
+            <li><a href="${pageContext.request.contextPath}/contact">Liên hệ</a></li>
+        </ul>
+    </nav>
 </header>
-<hr/>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <img src="${pageContext.request.contextPath}/images/hero-fashion.jpg" class="hero-bg" alt="Fashion Banner"/>
+    <div class="hero-content">
+        <h1>Ready to<br>Inspire Your Style</h1>
+        <a href="${pageContext.request.contextPath}/products" class="btn-orange">Xem sản phẩm mới</a>
+    </div>
+</section>
+</body>
+</html>

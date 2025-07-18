@@ -5,7 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "AdminUser")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter  @AllArgsConstructor
 public class AdminUser {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
