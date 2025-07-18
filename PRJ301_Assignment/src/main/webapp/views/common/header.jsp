@@ -39,6 +39,7 @@
             </c:otherwise>
         </c:choose>
         | <a href="${pageContext.request.contextPath}/cart">🛒 Giỏ hàng</a>
+      
         | <a href="${pageContext.request.contextPath}/wishlist">❤ Yêu thích</a>
     </div>
 </header>

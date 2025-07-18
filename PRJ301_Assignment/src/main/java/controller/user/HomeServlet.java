@@ -44,7 +44,7 @@ public class HomeServlet extends HttpServlet {
             request.setAttribute("blogs", blogs);
 
             // 5. Forward đến trang chủ
-            request.getRequestDispatcher("views/user/home/index.jsp").forward(request, response);
+            request.getRequestDispatcher("views/home/index.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

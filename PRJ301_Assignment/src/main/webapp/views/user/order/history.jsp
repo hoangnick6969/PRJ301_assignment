@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="/user/common/header.jsp" />
+<jsp:include page="/views/common/header.jsp" />
 
 <h2>📜 Lịch sử đơn hàng của bạn</h2>
 
@@ -37,4 +37,4 @@
     </c:otherwise>
 </c:choose>
 
-<jsp:include page="/user/common/footer.jsp" />
+<jsp:include page="/views/common/footer.jsp" />

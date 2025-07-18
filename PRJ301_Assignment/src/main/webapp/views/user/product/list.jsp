@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="/user/common/header.jsp" />
+<jsp:include page="/views/common/header.jsp" />
 
 <h2>🗂️ Danh mục: ${category.name}</h2>
 
@@ -21,4 +21,4 @@
     <p>Không có sản phẩm nào trong danh mục này.</p>
 </c:if>
 
-<jsp:include page="/user/common/footer.jsp" />
+<jsp:include page="/views/common/footer.jsp" />

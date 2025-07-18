@@ -51,7 +51,7 @@ public class AddToCartServlet extends HttpServlet {
             }
 
             session.setAttribute("cart", cart);
-            response.sendRedirect(request.getContextPath() + "/user/cart/view.jsp");
+            response.sendRedirect(request.getContextPath() + "views/user/cart/view.jsp");
 
         } catch (NumberFormatException e) {
             response.sendRedirect("views/common/error.jsp");
