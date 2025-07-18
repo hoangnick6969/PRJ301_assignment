@@ -142,4 +142,52 @@ public void update(CartItem item) {
             em.close();
         }
     }
+    public List<CartItem> findByCustomer(Customer customer) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT c FROM CartItem c WHERE c.customer = :customer", CartItem.class)
+                     .setParameter("customer", customer)
+                     .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+
+     public void deleteByCustomer(Customer customer) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.createQuery("DELETE FROM CartItem c WHERE c.customer = :customer")
+              .setParameter("customer", customer)
+              .executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+    public void deleteByCustomerAndProduct(int customerId, int productId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+            em.createQuery("DELETE FROM CartItem c WHERE c.customer.id = :cid AND c.product.id = :pid")
+              .setParameter("cid", customerId)
+              .setParameter("pid", productId)
+              .executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    
 }

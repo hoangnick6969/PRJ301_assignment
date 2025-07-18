@@ -5,13 +5,9 @@ import dao.ProductDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import model.Product;
+import model.*;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import model.CartItem;
-import model.Customer;
 
 @WebServlet(name = "AddToCartServlet", urlPatterns = {"/add-to-cart"})
 public class AddToCartServlet extends HttpServlet {
@@ -20,33 +16,49 @@ public class AddToCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        try {
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        ProductDAO productDAO = new ProductDAO();
-        Product product = productDAO.findById(productId);
-        HttpSession session = request.getSession();
-        Customer customer = (Customer) session.getAttribute("user");
+            HttpSession session = request.getSession();
+            Customer customer = (Customer) session.getAttribute("user");
 
-        if (product == null || quantity <= 0 || customer == null) {
+            // Nếu chưa đăng nhập → chuyển đến trang login
+            if (customer == null) {
+                response.sendRedirect("login");
+                return;
+            }
+
+            ProductDAO productDAO = new ProductDAO();
+            Product product = productDAO.findById(productId);
+
+            if (product == null || quantity <= 0) {
+                response.sendRedirect("views/common/error.jsp");
+                return;
+            }
+
+            CartItemDAO cartItemDAO = new CartItemDAO();
+            CartItem existingItem = cartItemDAO.findByCustomerAndProduct(customer, product);
+
+            if (existingItem != null) {
+                // Nếu sản phẩm đã có trong giỏ, cập nhật số lượng
+                existingItem.setQuantity(existingItem.getQuantity() + quantity);
+                cartItemDAO.update(existingItem);
+            } else {
+                // Nếu chưa có, tạo mới
+                CartItem item = new CartItem();
+                item.setCustomer(customer);
+                item.setProduct(product);
+                item.setQuantity(quantity);
+                cartItemDAO.insert(item);
+            }
+
+            // ✅ Chuyển hướng về giỏ hàng
+            response.sendRedirect("cart");
+
+        } catch (Exception e) {
+            e.printStackTrace();
             response.sendRedirect("views/common/error.jsp");
-            return;
         }
-
-        CartItemDAO cartItemDAO = new CartItemDAO();
-        CartItem existingItem = cartItemDAO.findByCustomerAndProduct(customer, product);
-
-        if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + quantity);
-            cartItemDAO.update(existingItem);
-        } else {
-            CartItem newItem = new CartItem();
-            newItem.setCustomer(customer);
-            newItem.setProduct(product);
-            newItem.setQuantity(quantity);
-            cartItemDAO.insert(newItem);
-        }
-
-        response.sendRedirect("cart");
     }
 }

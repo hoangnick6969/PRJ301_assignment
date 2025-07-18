@@ -19,30 +19,24 @@ import java.util.List;
 public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
+                throws ServletException, IOException {
+                try {
             int id = Integer.parseInt(request.getParameter("id"));
+            Product product = new ProductDAO().findById(id);
+            if (product == null) {
+                throw new Exception("Không tìm thấy sản phẩm có ID = " + id);
+            }
 
-            ProductDAO productDAO = new ProductDAO();
-            ProductImageDAO imageDAO = new ProductImageDAO();
-            ReviewDAO reviewDAO = new ReviewDAO();
-            CategoryDAO categoryDAO = new CategoryDAO();
-
-            Product product = productDAO.findById(id);
-            List<ProductImage> images = imageDAO.getByProductId(id);
-            List<Review> reviews = reviewDAO.getByProductId(id);
-            List<Category> categories = categoryDAO.getAll();
+            List<ProductImage> images = new ProductImageDAO().getByProduct(product);
 
             request.setAttribute("product", product);
             request.setAttribute("images", images);
-            request.setAttribute("reviews", reviews);
-            request.setAttribute("categories", categories);
-
             request.getRequestDispatcher("views/user/product/detail.jsp").forward(request, response);
-
         } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi tải chi tiết sản phẩm");
+            e.printStackTrace();  // in stack trace
+            request.setAttribute("error", "Lỗi xử lý sản phẩm: " + e.getMessage());
+            request.getRequestDispatcher("views/common/error.jsp").forward(request, response);
         }
+
     }
 }

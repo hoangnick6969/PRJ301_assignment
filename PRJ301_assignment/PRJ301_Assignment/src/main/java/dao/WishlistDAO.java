@@ -74,5 +74,6 @@ public class WishlistDAO {
         em.getTransaction().commit();
         em.close();
     }
+    
 
 }

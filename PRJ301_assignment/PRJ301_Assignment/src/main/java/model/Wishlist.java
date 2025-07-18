@@ -1,12 +1,14 @@
 package model;
 
 import jakarta.persistence.*;
+import java.util.Date;
 import lombok.*;
 
 @Entity
 @Table(name = "Wishlist",
        uniqueConstraints = @UniqueConstraint(columnNames = {"customerId", "productId"}))
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+
 public class Wishlist {
 
     @Id
@@ -21,8 +23,8 @@ public class Wishlist {
     @JoinColumn(name = "productId")
     private Product product;
 
-    public Wishlist() {
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt; // ✅ thêm dòng này
 
     public int getId() {
         return id;
@@ -47,5 +49,13 @@ public class Wishlist {
     public void setProduct(Product product) {
         this.product = product;
     }
-    
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }

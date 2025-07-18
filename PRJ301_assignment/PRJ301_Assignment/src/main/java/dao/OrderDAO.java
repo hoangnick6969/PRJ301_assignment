@@ -13,14 +13,19 @@ import model.Customer;
 public class OrderDAO {
     public void insert(Order order) {
         EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.persist(order);
-            em.getTransaction().commit();
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw e;
         } finally {
             em.close();
         }
     }
+
     
     public List<Order> getAll() {
         EntityManager em = JPAUtil.getEntityManager();
@@ -59,9 +64,14 @@ public class OrderDAO {
     }
     public List<Order> getByCustomer(Customer customer) {
         EntityManager em = JPAUtil.getEntityManager();
-        return em.createQuery("SELECT o FROM Order o WHERE o.customer.id = :cid ORDER BY o.orderDate DESC", Order.class)
-                 .setParameter("cid", customer.getId())
-                 .getResultList();
+        try {
+            return em.createQuery(
+                    "SELECT o FROM Order o WHERE o.customer.id = :cid ORDER BY o.orderDate DESC", Order.class)
+                     .setParameter("cid", customer.getId())
+                     .getResultList();
+        } finally {
+            em.close();
+        }
     }
     public Map<String, Double> getMonthlyRevenue(int lastMonths) {
         EntityManager em = JPAUtil.getEntityManager();

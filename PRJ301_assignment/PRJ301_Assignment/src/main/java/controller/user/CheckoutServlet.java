@@ -1,10 +1,6 @@
 package controller.user;
 
-import dao.OrderDAO;
-import dao.OrderDetailDAO;
-import dao.PaymentMethodDAO;
-import dao.ShippingMethodDAO;
-import dao.CategoryDAO;
+import dao.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -20,81 +16,88 @@ public class CheckoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Load shipping & payment
         ShippingMethodDAO shippingDAO = new ShippingMethodDAO();
         PaymentMethodDAO paymentDAO = new PaymentMethodDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
 
-        List<ShippingMethod> shippingMethods = shippingDAO.getAll();
-        List<PaymentMethod> paymentMethods = paymentDAO.getAll();
-        List<Category> categories = categoryDAO.getAll();
-
-        request.setAttribute("shippingMethods", shippingMethods);
-        request.setAttribute("paymentMethods", paymentMethods);
-        request.setAttribute("categories", categories);
+        request.setAttribute("shippingMethods", shippingDAO.getAll());
+        request.setAttribute("paymentMethods", paymentDAO.getAll());
+        request.setAttribute("categories", categoryDAO.getAll());
 
         request.getRequestDispatcher("/views/user/order/checkout.jsp").forward(request, response);
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        Customer customer = (Customer) session.getAttribute("user");
+        try {
+            HttpSession session = request.getSession();
+            Customer customer = (Customer) session.getAttribute("user");
 
-        if (customer == null) {
-            response.sendRedirect("login");
-            return;
+            if (customer == null) {
+                response.sendRedirect("login");
+                return;
+            }
+
+            CartItemDAO cartItemDAO = new CartItemDAO();
+            List<CartItem> cartItems = cartItemDAO.findByCustomer(customer);
+
+            if (cartItems == null || cartItems.isEmpty()) {
+                response.sendRedirect("cart");
+                return;
+            }
+
+            int shippingId = Integer.parseInt(request.getParameter("shippingMethod"));
+            int paymentId = Integer.parseInt(request.getParameter("paymentMethod"));
+
+            ShippingMethodDAO shippingDAO = new ShippingMethodDAO();
+            PaymentMethodDAO paymentDAO = new PaymentMethodDAO();
+
+            ShippingMethod shipping = shippingDAO.findById(shippingId);
+            PaymentMethod payment = paymentDAO.findById(paymentId);
+
+            // 🔎 Debug xem có null không
+            System.out.println("Shipping: " + (shipping != null ? shipping.getName() : "null"));
+            System.out.println("Payment: " + (payment != null ? payment.getName() : "null"));
+
+            if (shipping == null || payment == null) {
+                throw new Exception("Phương thức giao hàng hoặc thanh toán không hợp lệ!");
+            }
+
+            double total = cartItems.stream()
+                    .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+                    .sum();
+
+            Order order = new Order();
+            order.setCustomer(customer);
+            order.setShippingMethod(shipping);
+            order.setPaymentMethod(payment);
+            order.setOrderDate(new Date());
+            order.setTotal(total);
+            order.setStatus("Chờ xử lý");
+
+            OrderDAO orderDAO = new OrderDAO();
+            orderDAO.insert(order);
+
+            OrderDetailDAO detailDAO = new OrderDetailDAO();
+            for (CartItem item : cartItems) {
+                OrderDetail detail = new OrderDetail();
+                detail.setOrder(order);
+                detail.setProduct(item.getProduct());
+                detail.setQuantity(item.getQuantity());
+                detail.setPrice(item.getProduct().getPrice());
+                detailDAO.insert(detail);
+            }
+
+            cartItemDAO.deleteByCustomer(customer);
+
+            response.sendRedirect("order-success");
+
+        } catch (Exception e) {
+            e.printStackTrace();  // ✅ Hiển thị log trong console
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/views/common/error.jsp").forward(request, response);
         }
-
-        Map<Product, Integer> cart = (Map<Product, Integer>) session.getAttribute("cart");
-        if (cart == null || cart.isEmpty()) {
-            response.sendRedirect("cart");
-            return;
-        }
-
-        int shippingId = Integer.parseInt(request.getParameter("shippingMethod"));
-        int paymentId = Integer.parseInt(request.getParameter("paymentMethod"));
-
-        double total = cart.entrySet().stream()
-                .mapToDouble(e -> e.getKey().getPrice() * e.getValue())
-                .sum();
-
-        // Tạo đơn hàng
-        Order order = new Order();
-        order.setCustomer(customer);
-        ShippingMethodDAO shippingDAO = new ShippingMethodDAO();
-        ShippingMethod shipping = shippingDAO.findById(shippingId);
-
-        PaymentMethodDAO paymentDAO = new PaymentMethodDAO();
-        PaymentMethod payment = paymentDAO.findById(paymentId);
-
-        order.setShippingMethod(shipping);
-        order.setPaymentMethod(payment);
-        order.setOrderDate(new Date());
-        order.setTotal(total);
-        order.setStatus("Chờ xử lý");
-
-        OrderDAO orderDAO = new OrderDAO();
-        orderDAO.insert(order);
-
-        // Tạo chi tiết đơn hàng
-        OrderDetailDAO detailDAO = new OrderDetailDAO();
-        for (Map.Entry<Product, Integer> entry : cart.entrySet()) {
-            OrderDetail detail = new OrderDetail();
-            detail.setOrder(order);
-            detail.setProduct(entry.getKey());
-            detail.setQuantity(entry.getValue());
-            detail.setPrice(entry.getKey().getPrice());
-            detailDAO.insert(detail);
-        }
-
-        // Xóa giỏ hàng
-        session.removeAttribute("cart");
-
-        // Chuyển đến trang thành công
-        response.sendRedirect("order-success");
     }
 }

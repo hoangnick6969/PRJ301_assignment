@@ -64,8 +64,13 @@ public class ProductDAO {
 
     public Product findById(int id) {
         EntityManager em = JPAUtil.getEntityManager();
-        return em.find(Product.class, id);
+        try {
+            return em.find(Product.class, id);
+        } finally {
+            em.close();
+        }
     }
+
     public void insert(Product product) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction trans = em.getTransaction();
