@@ -1,253 +1,258 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${banner != null ? 'Edit' : 'Add'} Banner - Fashion Shop Admin</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <title>${banner != null ? 'Chỉnh sửa Banner' : 'Thêm Banner mới'} - Fashion Shop Admin</title>
+    <link href="<c:url value='/css/style.css'/>" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <jsp:include page="../common/header.jsp" />
-    
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h2 class="card-title gradient-text">
-                                <i class="fas fa-image"></i>
-                                ${banner != null ? 'Edit Banner' : 'Add New Banner'}
-                            </h2>
-                            <a href="${pageContext.request.contextPath}/admin/banners" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Back to List
-                            </a>
-                        </div>
+    <div class="admin-layout">
+        <!-- Include header -->
+        <jsp:include page="../common/header.jsp"/>
+        
+        <div class="admin-content">
+            <div class="content-header">
+                <div class="header-top">
+                    <h1>
+                        <i class="fas fa-image"></i>
+                        ${banner != null ? 'Chỉnh sửa Banner' : 'Thêm Banner mới'}
+                    </h1>
+                    <div class="breadcrumb">
+                        <a href="<c:url value='/admin/dashboard'/>">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                        <span class="separator">/</span>
+                        <a href="<c:url value='/admin/banners'/>">Quản lý Banner</a>
+                        <span class="separator">/</span>
+                        <span>${banner != null ? 'Chỉnh sửa' : 'Thêm mới'}</span>
                     </div>
+                </div>
+            </div>
 
-                    <form method="post" action="${pageContext.request.contextPath}/admin/banners" class="needs-validation" novalidate>
+            <div class="form-container">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h2>
+                            <i class="fas fa-edit"></i>
+                            Thông tin Banner
+                        </h2>
+                    </div>
+                    
+                    <form action="<c:url value='/admin/banners'/>" method="post" class="admin-form">
                         <c:if test="${banner != null}">
                             <input type="hidden" name="id" value="${banner.id}">
                         </c:if>
                         
-                        <div class="row">
-                            <div class="col" style="flex: 2;">
-                                <div class="form-group">
-                                    <label for="title" class="form-label">
-                                        <i class="fas fa-heading"></i> Banner Title *
-                                    </label>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           id="title" 
-                                           name="title" 
-                                           value="${banner != null ? banner.title : ''}" 
-                                           required 
-                                           placeholder="Enter banner title">
-                                    <div class="invalid-feedback">
-                                        Please provide a valid banner title.
-                                    </div>
-                                </div>
+                        <div class="form-group">
+                            <label for="title" class="form-label">
+                                <i class="fas fa-heading"></i>
+                                Tiêu đề Banner <span class="required">*</span>
+                            </label>
+                            <input type="text" 
+                                   id="title" 
+                                   name="title" 
+                                   class="form-control" 
+                                   value="${banner != null ? banner.title : ''}" 
+                                   placeholder="Nhập tiêu đề banner"
+                                   required>
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="image" class="form-label">
-                                        <i class="fas fa-image"></i> Image URL *
-                                    </label>
-                                    <input type="url" 
-                                           class="form-control" 
-                                           id="image" 
-                                           name="image" 
-                                           value="${banner != null ? banner.image : ''}" 
-                                           required 
-                                           placeholder="https://example.com/banner-image.jpg">
-                                    <div class="invalid-feedback">
-                                        Please provide a valid image URL.
-                                    </div>
-                                    <small class="form-text text-muted">
-                                        <i class="fas fa-info-circle"></i> 
-                                        Recommended size: 1200x400px for best results
-                                    </small>
-                                </div>
+                        <div class="form-group">
+                            <label for="description" class="form-label">
+                                <i class="fas fa-align-left"></i>
+                                Mô tả
+                            </label>
+                            <textarea id="description" 
+                                      name="description" 
+                                      class="form-control textarea" 
+                                      rows="3" 
+                                      placeholder="Nhập mô tả banner">${banner != null ? banner.description : ''}</textarea>
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="position" class="form-label">
-                                        <i class="fas fa-map-marker-alt"></i> Position *
-                                    </label>
-                                    <select class="form-control form-select" id="position" name="position" required>
-                                        <option value="">Choose banner position...</option>
-                                        <option value="homepage-top" ${banner != null && banner.position == 'homepage-top' ? 'selected' : ''}>
-                                            Homepage - Top
-                                        </option>
-                                        <option value="homepage-middle" ${banner != null && banner.position == 'homepage-middle' ? 'selected' : ''}>
-                                            Homepage - Middle
-                                        </option>
-                                        <option value="homepage-bottom" ${banner != null && banner.position == 'homepage-bottom' ? 'selected' : ''}>
-                                            Homepage - Bottom
-                                        </option>
-                                        <option value="category-top" ${banner != null && banner.position == 'category-top' ? 'selected' : ''}>
-                                            Category - Top
-                                        </option>
-                                        <option value="product-sidebar" ${banner != null && banner.position == 'product-sidebar' ? 'selected' : ''}>
-                                            Product - Sidebar
-                                        </option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a banner position.
-                                    </div>
-                                </div>
+                        <div class="form-group">
+                            <label for="imageUrl" class="form-label">
+                                <i class="fas fa-image"></i>
+                                URL Hình ảnh <span class="required">*</span>
+                            </label>
+                            <input type="url" 
+                                   id="imageUrl" 
+                                   name="imageUrl" 
+                                   class="form-control" 
+                                   value="${banner != null ? banner.imageUrl : ''}" 
+                                   placeholder="https://example.com/image.jpg"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="linkUrl" class="form-label">
+                                <i class="fas fa-link"></i>
+                                URL Liên kết
+                            </label>
+                            <input type="url" 
+                                   id="linkUrl" 
+                                   name="linkUrl" 
+                                   class="form-control" 
+                                   value="${banner != null ? banner.linkUrl : ''}" 
+                                   placeholder="https://example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="position" class="form-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Vị trí hiển thị <span class="required">*</span>
+                            </label>
+                            <select id="position" name="position" class="form-control" required>
+                                <option value="">-- Chọn vị trí --</option>
+                                <option value="homepage-top" ${banner != null && banner.position == 'homepage-top' ? 'selected' : ''}>
+                                    Trang chủ - Top
+                                </option>
+                                <option value="homepage-middle" ${banner != null && banner.position == 'homepage-middle' ? 'selected' : ''}>
+                                    Trang chủ - Giữa
+                                </option>
+                                <option value="homepage-bottom" ${banner != null && banner.position == 'homepage-bottom' ? 'selected' : ''}>
+                                    Trang chủ - Cuối
+                                </option>
+                                <option value="product-page" ${banner != null && banner.position == 'product-page' ? 'selected' : ''}>
+                                    Trang sản phẩm
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="sortOrder" class="form-label">
+                                    <i class="fas fa-sort-numeric-up"></i>
+                                    Thứ tự hiển thị
+                                </label>
+                                <input type="number" 
+                                       id="sortOrder" 
+                                       name="sortOrder" 
+                                       class="form-control" 
+                                       value="${banner != null ? banner.sortOrder : 0}" 
+                                       min="0" 
+                                       placeholder="0">
                             </div>
                             
-                            <div class="col" style="flex: 1;">
-                                <div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-                                    <div class="card-header">
-                                        <h5 class="card-title">
-                                            <i class="fas fa-eye"></i> Preview
-                                        </h5>
-                                    </div>
-                                    <div style="padding: 1rem;">
-                                        <div id="imagePreview" style="text-align: center; min-height: 200px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 8px;">
-                                            <c:choose>
-                                                <c:when test="${banner != null && banner.image != null && banner.image != ''}">
-                                                    <img src="${banner.image}" alt="Banner Preview" style="max-width: 100%; max-height: 200px; border-radius: 6px;">
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div style="color: #6c757d;">
-                                                        <i class="fas fa-image fa-3x mb-2"></i>
-                                                        <p>Image preview will appear here</p>
-                                                    </div>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                        <div class="mt-3">
-                                            <strong>Position:</strong> 
-                                            <span id="positionPreview" class="badge badge-info">
-                                                ${banner != null ? banner.position : 'Not selected'}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="form-group col-md-6">
+                                <label for="isActive" class="form-label">
+                                    <i class="fas fa-toggle-on"></i>
+                                    Trạng thái
+                                </label>
+                                <select id="isActive" name="isActive" class="form-control">
+                                    <option value="true" ${banner == null || banner.active ? 'selected' : ''}>
+                                        Hoạt động
+                                    </option>
+                                    <option value="false" ${banner != null && !banner.active ? 'selected' : ''}>
+                                        Tạm dừng
+                                    </option>
+                                </select>
                             </div>
                         </div>
 
-                        <div class="form-group" style="border-top: 2px solid #e9ecef; padding-top: 2rem; margin-top: 2rem;">
-                            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                                <a href="${pageContext.request.contextPath}/admin/banners" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Cancel
-                                </a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i>
-                                    ${banner != null ? 'Update Banner' : 'Create Banner'}
-                                </button>
-                            </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                ${banner != null ? 'Cập nhật Banner' : 'Thêm Banner'}
+                            </button>
+                            <a href="<c:url value='/admin/banners'/>" class="btn btn-secondary">
+                                <i class="fas fa-times"></i>
+                                Hủy bỏ
+                            </a>
                         </div>
                     </form>
                 </div>
+
+                <!-- Preview Card -->
+                <c:if test="${banner != null && banner.imageUrl != null}">
+                    <div class="preview-card">
+                        <div class="form-header">
+                            <h2>
+                                <i class="fas fa-eye"></i>
+                                Xem trước Banner
+                            </h2>
+                        </div>
+                        <div class="banner-preview">
+                            <img src="${banner.imageUrl}" 
+                                 alt="${banner.title}" 
+                                 class="preview-image"
+                                 onerror="this.src='<c:url value="/images/placeholder.jpg"/>'">
+                            <div class="preview-info">
+                                <h4>${banner.title}</h4>
+                                <c:if test="${banner.description != null}">
+                                    <p>${banner.description}</p>
+                                </c:if>
+                                <div class="preview-meta">
+                                    <span class="badge badge-info">${banner.position}</span>
+                                    <span class="badge ${banner.active ? 'badge-success' : 'badge-danger'}">
+                                        ${banner.active ? 'Hoạt động' : 'Tạm dừng'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
             </div>
         </div>
+
+        <!-- Include footer -->
+        <jsp:include page="../common/footer.jsp"/>
     </div>
 
-    <jsp:include page="../common/footer.jsp" />
-
     <script>
+        // Real-time preview update
+        document.getElementById('imageUrl').addEventListener('input', function() {
+            const previewImg = document.querySelector('.preview-image');
+            if (previewImg) {
+                previewImg.src = this.value || '<c:url value="/images/placeholder.jpg"/>';
+            }
+        });
+
+        document.getElementById('title').addEventListener('input', function() {
+            const previewTitle = document.querySelector('.preview-info h4');
+            if (previewTitle) {
+                previewTitle.textContent = this.value;
+            }
+        });
+
+        document.getElementById('description').addEventListener('input', function() {
+            const previewDesc = document.querySelector('.preview-info p');
+            if (previewDesc) {
+                previewDesc.textContent = this.value;
+            }
+        });
+
         // Form validation
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
+        document.querySelector('.admin-form').addEventListener('submit', function(e) {
+            const title = document.getElementById('title').value.trim();
+            const imageUrl = document.getElementById('imageUrl').value.trim();
+            const position = document.getElementById('position').value;
 
-        // Image preview functionality
-        document.getElementById('image').addEventListener('input', function() {
-            const imageUrl = this.value;
-            const preview = document.getElementById('imagePreview');
-            
-            if (imageUrl && isValidUrl(imageUrl)) {
-                preview.innerHTML = '<img src="' + imageUrl + '" alt="Banner Preview" style="max-width: 100%; max-height: 200px; border-radius: 6px;" onerror="showImageError()">';
-            } else {
-                preview.innerHTML = '<div style="color: #6c757d;"><i class="fas fa-image fa-3x mb-2"></i><p>Image preview will appear here</p></div>';
+            if (!title) {
+                e.preventDefault();
+                alert('Vui lòng nhập tiêu đề banner!');
+                document.getElementById('title').focus();
+                return;
+            }
+
+            if (!imageUrl) {
+                e.preventDefault();
+                alert('Vui lòng nhập URL hình ảnh!');
+                document.getElementById('imageUrl').focus();
+                return;
+            }
+
+            if (!position) {
+                e.preventDefault();
+                alert('Vui lòng chọn vị trí hiển thị!');
+                document.getElementById('position').focus();
+                return;
             }
         });
-
-        // Position preview functionality
-        document.getElementById('position').addEventListener('change', function() {
-            const position = this.value;
-            const preview = document.getElementById('positionPreview');
-            preview.textContent = position || 'Not selected';
-        });
-
-        function isValidUrl(string) {
-            try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
-
-        function showImageError() {
-            document.getElementById('imagePreview').innerHTML = '<div style="color: #dc3545;"><i class="fas fa-exclamation-triangle fa-2x mb-2"></i><p>Failed to load image</p></div>';
-        }
     </script>
-
-    <style>
-        .badge {
-            display: inline-block;
-            padding: 0.375rem 0.75rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: 0.375rem;
-        }
-
-        .badge-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .form-text {
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-
-        .text-muted {
-            color: #6c757d;
-        }
-
-        .invalid-feedback {
-            display: none;
-            width: 100%;
-            margin-top: 0.25rem;
-            font-size: 0.875rem;
-            color: #dc3545;
-        }
-
-        .was-validated .form-control:invalid ~ .invalid-feedback {
-            display: block;
-        }
-
-        .was-validated .form-control:valid {
-            border-color: #28a745;
-        }
-
-        .was-validated .form-control:invalid {
-            border-color: #dc3545;
-        }
-    </style>
 </body>
 </html>
