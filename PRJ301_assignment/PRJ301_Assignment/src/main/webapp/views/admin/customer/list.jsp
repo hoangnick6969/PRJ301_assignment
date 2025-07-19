@@ -26,7 +26,6 @@
                 <a href="${pageContext.request.contextPath}/admin/customers?action=delete&id=${c.id}"
                    onclick="return confirm('Xoá khách hàng này?')">🗑 Xoá</a>
             </td>
-
         </tr>
     </c:forEach>
 </table>

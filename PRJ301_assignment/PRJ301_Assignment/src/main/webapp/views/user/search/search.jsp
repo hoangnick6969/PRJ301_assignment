@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:include page="../../common/header.jsp" />
+<jsp:include page="/views/common/header.jsp" />
 
-<h2>🔍 Kết quả tìm kiếm cho từ khóa: <em>${param.keyword}</em></h2>
+<h2>🔍 Kết quả tìm kiếm cho từ khóa: <em>${query}</em></h2>
 
 <c:choose>
     <c:when test="${empty results}">
@@ -16,12 +17,12 @@
                     <a href="${pageContext.request.contextPath}/product-detail?id=${p.id}">
                         <img src="${pageContext.request.contextPath}/${p.mainImage}" width="200" />
                         <h4>${p.name}</h4>
-                        <p>${p.price} VND</p>
+                        <p><fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></p>
                     </a>
                 </div>
             </c:forEach>
         </div>
     </c:otherwise>
 </c:choose>
-        
-<jsp:include page="../../common/footer.jsp" />
+
+<jsp:include page="/views/common/footer.jsp" />

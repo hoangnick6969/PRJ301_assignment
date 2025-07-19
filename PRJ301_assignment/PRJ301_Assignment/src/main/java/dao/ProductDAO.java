@@ -1,6 +1,7 @@
 package dao;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import model.Product;
 import util.JPAUtil;
 
@@ -128,7 +129,27 @@ public class ProductDAO {
                  .setMaxResults(limit)
                  .getResultList();
     }
+    public List<Product> smartSearch(String keyword) {
+    EntityManager em = JPAUtil.getEntityManager();
+    try {
+        String jpql = "SELECT DISTINCT p FROM Product p " +
+                      "WHERE LOWER(p.name) LIKE :kw " +
+                      "   OR LOWER(p.description) LIKE :kw " +
+                      "   OR LOWER(p.tags) LIKE :kw";
+
+        String pattern = "%" + keyword.toLowerCase() + "%";
+
+        return em.createQuery(jpql, Product.class)
+                .setParameter("kw", pattern)
+                .getResultList();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new ArrayList<>();
+    }
+}
+
+
+
     
-
-
 }
