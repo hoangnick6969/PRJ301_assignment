@@ -43,6 +43,7 @@
     <a href="${pageContext.request.contextPath}/admin/order">🧾 Đơn hàng</a>
     <a href="${pageContext.request.contextPath}/admin/customer">👥 Khách hàng</a>
     <a href="${pageContext.request.contextPath}/admin/review">⭐ Đánh giá</a>
+    <a href="${pageContext.request.contextPath}/admin/banners">🖼️ Banner</a>
     <a href="${pageContext.request.contextPath}/admin/contact">📨 Liên hệ</a>
     <a href="${pageContext.request.contextPath}/admin/logout" style="float:right;">🚪 Đăng xuất</a>
 </div>
