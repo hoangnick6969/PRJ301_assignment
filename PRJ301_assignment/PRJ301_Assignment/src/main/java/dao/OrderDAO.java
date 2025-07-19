@@ -73,28 +73,34 @@ public class OrderDAO {
             em.close();
         }
     }
-    public Map<String, Double> getMonthlyRevenue(int lastMonths) {
-        EntityManager em = JPAUtil.getEntityManager();
-        Map<String, Double> map = new LinkedHashMap<>();
-        try {
-            List<Object[]> results = em.createQuery(
-                "SELECT FUNCTION('FORMAT', o.orderDate, 'MM-yyyy'), SUM(o.total) " +
-                "FROM Order o " +
-                "WHERE o.status != 'Hủy' " +
-                "GROUP BY FUNCTION('FORMAT', o.orderDate, 'MM-yyyy') " +
-                "ORDER BY FUNCTION('FORMAT', o.orderDate, 'yyyy-MM') DESC"
-            ).setMaxResults(lastMonths).getResultList();
+   public Map<String, Double> getMonthlyRevenue(int lastMonths) {
+    EntityManager em = JPAUtil.getEntityManager();
+    Map<String, Double> map = new LinkedHashMap<>();
 
-            for (Object[] row : results) {
-                String month = (String) row[0];
-                Double total = (Double) row[1];
-                map.put(month, total);
-            }
+    try {
+        List<Object[]> results = em.createQuery(
+            "SELECT YEAR(o.orderDate), MONTH(o.orderDate), SUM(o.total) " +
+            "FROM Order o " +
+            "WHERE o.status != 'Hủy' " +
+            "GROUP BY YEAR(o.orderDate), MONTH(o.orderDate) " +
+            "ORDER BY YEAR(o.orderDate) DESC, MONTH(o.orderDate) DESC"
+        ).setMaxResults(lastMonths).getResultList();
 
-            return map;
-        } finally {
-            em.close();
+        for (Object[] row : results) {
+            int year = (Integer) row[0];
+            int month = (Integer) row[1];
+            Double total = (Double) row[2];
+
+            // Format: Tháng MM/yyyy
+            String key = String.format("Tháng %02d/%d", month, year);
+            map.put(key, total);
         }
+
+        return map;
+    } finally {
+        em.close();
     }
+}
+
 
 }

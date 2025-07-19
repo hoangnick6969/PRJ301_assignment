@@ -10,12 +10,11 @@
 </c:if>
 
 <form action="${pageContext.request.contextPath}/login" method="post">
-    <label>Email:</label><br/>
-    <input type="email" name="email" required /><br/><br/>
+    <label>Email hoặc Tên đăng nhập:</label>
+    <input type="text" name="email" required>
 
-    <label>Mật khẩu:</label><br/>
-    <input type="password" name="password" required /><br/><br/>
-
+    <label>Mật khẩu:</label>
+    <input type="password" name="password" required>
     <button type="submit">Đăng nhập</button>
 </form>
 
