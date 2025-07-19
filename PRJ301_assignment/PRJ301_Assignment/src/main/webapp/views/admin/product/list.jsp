@@ -4,7 +4,8 @@
 
 <h2>📦 Danh sách sản phẩm</h2>
 
-<a href="${pageContext.request.contextPath}/admin/product?action=add">
+<!-- Nút thêm sản phẩm mới -->
+<a href="${pageContext.request.contextPath}/admin/products?action=add">
     ➕ Thêm sản phẩm mới
 </a>
 
@@ -25,8 +26,8 @@
             <td><img src="${pageContext.request.contextPath}/${p.mainImage}" width="80"/></td>
             <td>${p.category.name}</td>
             <td>
-                <a href="product?action=edit&id=${p.id}">✏️ Sửa</a> |
-                <a href="product?action=delete&id=${p.id}" onclick="return confirm('Xoá sản phẩm này?')">🗑 Xoá</a>
+                <a href="${pageContext.request.contextPath}/admin/products?action=edit&id=${p.id}">✏️ Sửa</a> |
+                <a href="${pageContext.request.contextPath}/admin/products?action=delete&id=${p.id}" onclick="return confirm('Xoá sản phẩm này?')">🗑 Xoá</a>
             </td>
         </tr>
     </c:forEach>

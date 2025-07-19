@@ -47,21 +47,41 @@ public class OrderDAO {
             em.close();
         }
     }
-
-
-    public void update(Order order) {
+    public void delete(int id) {
         EntityManager em = JPAUtil.getEntityManager();
-        EntityTransaction trans = em.getTransaction();
+        EntityTransaction tx = em.getTransaction();
+
         try {
-            trans.begin();
-            em.merge(order);
-            trans.commit();
+            tx.begin();
+            Order order = em.find(Order.class, id);
+            if (order != null) {
+                em.remove(order); // nếu có quan hệ cascade, sẽ xóa cả OrderDetail
+            }
+            tx.commit();
         } catch (Exception e) {
-            if (trans.isActive()) trans.rollback();
+            if (tx.isActive()) tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }
     }
+
+
+    public void update(Order o) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(o);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
     public List<Order> getByCustomer(Customer customer) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -101,6 +121,18 @@ public class OrderDAO {
         em.close();
     }
 }
+   public List<Order> findByCustomerId(int customerId) {
+    EntityManager em = JPAUtil.getEntityManager();
+    try {
+        return em.createQuery("SELECT o FROM Order o WHERE o.customer.id = :cid", Order.class)
+                 .setParameter("cid", customerId)
+                 .getResultList();
+    } finally {
+        em.close();
+    }
+}
+
+
 
 
 }

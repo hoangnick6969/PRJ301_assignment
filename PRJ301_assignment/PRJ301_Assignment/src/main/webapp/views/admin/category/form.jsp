@@ -9,13 +9,13 @@
     </c:choose>
 </h2>
 
-<form method="post" action="${pageContext.request.contextPath}/admin/categories">
+<form method="post" action="${pageContext.request.contextPath}/admin/categories" style="max-width: 400px;">
     <input type="hidden" name="id" value="${category.id}" />
 
-    <label>Tên danh mục:</label><br/>
-    <input type="text" name="name" value="${category.name}" required /><br/><br/>
+    <label for="name">Tên danh mục:</label><br/>
+    <input type="text" id="name" name="name" value="${category.name}" required style="width: 100%; padding: 8px; margin-top: 5px;" /><br/><br/>
 
-    <button type="submit">Lưu</button>
+    <button type="submit" style="padding: 8px 16px;">💾 Lưu</button>
 </form>
 
 <jsp:include page="/views/admin/common/footer.jsp" />

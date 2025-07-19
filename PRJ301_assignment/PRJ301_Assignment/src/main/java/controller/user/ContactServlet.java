@@ -31,7 +31,7 @@ public class ContactServlet extends HttpServlet {
         msg.setName(name);
         msg.setEmail(email);
         msg.setSubject(subject);
-        msg.setMessage(message);
+        msg.setContent(message);
         msg.setSentAt(new Date());
 
         new ContactMessageDAO().insert(msg);

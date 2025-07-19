@@ -21,24 +21,30 @@ public class AdminBlogServlet extends HttpServlet {
 
         String action = request.getParameter("action");
 
-        if (action == null) {
-            List<BlogPost> list = blogDAO.getAll();
-            request.setAttribute("blogList", list);
-            request.getRequestDispatcher("/views/admin/blog/list.jsp").forward(request, response);
+        try {
+            if (action == null) {
+                List<BlogPost> list = blogDAO.getAll();
+                request.setAttribute("blogList", list);
+                request.getRequestDispatcher("/views/admin/blog/list.jsp").forward(request, response);
 
-        } else if ("edit".equals(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            BlogPost blog = blogDAO.findById(id);
-            request.setAttribute("blog", blog);
-            request.getRequestDispatcher("/views/admin/blog/form.jsp").forward(request, response);
+            } else if ("edit".equals(action)) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                BlogPost blog = blogDAO.findById(id);
+                request.setAttribute("blog", blog);
+                request.getRequestDispatcher("/views/admin/blog/form.jsp").forward(request, response);
 
-        } else if ("delete".equals(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            blogDAO.delete(id);
-            response.sendRedirect("blogs");
+            } else if ("delete".equals(action)) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                blogDAO.delete(id);
+                response.sendRedirect("blogs");
 
-        } else if ("add".equals(action)) {
-            request.getRequestDispatcher("/views/admin/blog/form.jsp").forward(request, response);
+            } else if ("add".equals(action)) {
+                request.getRequestDispatcher("/views/admin/blog/form.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Lỗi xử lý blog: " + e.getMessage());
+            request.getRequestDispatcher("/views/admin/common/error.jsp").forward(request, response);
         }
     }
 

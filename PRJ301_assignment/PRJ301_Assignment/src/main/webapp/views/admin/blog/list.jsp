@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/views/admin/common/header.jsp" />
 
 <h2>📝 Danh sách bài viết</h2>
@@ -10,7 +11,6 @@
     <tr>
         <th>ID</th>
         <th>Tiêu đề</th>
-        <th>Tác giả</th>
         <th>Ngày đăng</th>
         <th>Thao tác</th>
     </tr>
@@ -19,11 +19,10 @@
         <tr>
             <td>${b.id}</td>
             <td>${b.title}</td>
-            <td>${b.author}</td>
-            <td>${b.createdAt}</td>
+            <td><fmt:formatDate value="${b.createdAt}" pattern="dd/MM/yyyy HH:mm" /></td>
             <td>
-                <a href="blogs?action=edit&id=${b.id}">✏️ Sửa</a> |
-                <a href="blogs?action=delete&id=${b.id}" onclick="return confirm('Xoá bài viết này?')">🗑 Xoá</a>
+                <a href="${pageContext.request.contextPath}/admin/blogs?action=edit&id=${b.id}">✏️ Sửa</a> |
+                <a href="${pageContext.request.contextPath}/admin/blogs?action=delete&id=${b.id}" onclick="return confirm('Xoá bài viết này?')">🗑 Xoá</a>
             </td>
         </tr>
     </c:forEach>

@@ -62,5 +62,4 @@ public class BlogPost {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-    
 }

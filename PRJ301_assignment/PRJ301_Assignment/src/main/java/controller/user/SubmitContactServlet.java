@@ -27,7 +27,7 @@ public class SubmitContactServlet extends HttpServlet {
         cm.setName(name);
         cm.setEmail(email);
         cm.setSubject(subject);
-        cm.setMessage(msg);
+        cm.setContent(msg);
         cm.setSentAt(new Date());
 
         dao.save(cm);

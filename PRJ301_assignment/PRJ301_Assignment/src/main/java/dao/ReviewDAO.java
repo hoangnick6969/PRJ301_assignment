@@ -79,16 +79,17 @@ public class ReviewDAO {
             em.close();
         }
     }
-
     public void delete(int id) {
         EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             Review r = em.find(Review.class, id);
-            if (r != null) {
-                em.remove(r);
-            }
-            em.getTransaction().commit();
+            if (r != null) em.remove(r);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }

@@ -15,9 +15,10 @@ public class AdminLogoutServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate(); // Hủy session admin
+            session.invalidate(); // Hủy phiên làm việc
         }
 
-        response.sendRedirect("../admin-login.jsp"); // hoặc chuyển về login
+        // Chuyển về trang login (tùy vào dự án, bạn có thể đặt lại cho phù hợp)
+        response.sendRedirect(request.getContextPath() + "/login");
     }
 }
