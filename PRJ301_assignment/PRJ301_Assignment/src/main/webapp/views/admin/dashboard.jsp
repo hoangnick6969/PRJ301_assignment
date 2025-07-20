@@ -15,6 +15,7 @@
 <h3>📈 Doanh thu 6 tháng gần nhất</h3>
 <canvas id="revenueChart" width="800" height="300"></canvas>
 
+    <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('revenueChart').getContext('2d');
@@ -22,15 +23,15 @@
         type: 'bar',
         data: {
             labels: [
-                <c:forEach var="entry" items="${revenueMap}" varStatus="loop">
-                    '${entry.key}'<c:if test="${!loop.last}">,</c:if>
+                <c:forEach var="entry" items="${revenueMap}">
+                    '${entry.key}',
                 </c:forEach>
             ],
             datasets: [{
                 label: 'Doanh thu (VND)',
                 data: [
-                    <c:forEach var="entry" items="${revenueMap}" varStatus="loop">
-                        ${entry.value}<c:if test="${!loop.last}">,</c:if>
+                    <c:forEach var="entry" items="${revenueMap}">
+                        ${entry.value},
                     </c:forEach>
                 ],
                 backgroundColor: 'rgba(54, 162, 235, 0.7)',

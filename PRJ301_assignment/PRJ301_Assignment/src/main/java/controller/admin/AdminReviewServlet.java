@@ -18,18 +18,8 @@ public class AdminReviewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String action = request.getParameter("action");
-
-        if ("delete".equals(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            dao.delete(id);
-            response.sendRedirect("reviews");
-            return;
-        }
-
-        // Hiển thị danh sách đánh giá
         List<Review> list = dao.getAll();
-        request.setAttribute("reviewList", list);
-        request.getRequestDispatcher("/views/admin/review/list.jsp").forward(request, response);
+        request.setAttribute("reviews", list);
+        request.getRequestDispatcher("/admin/review-list.jsp").forward(request, response);
     }
 }

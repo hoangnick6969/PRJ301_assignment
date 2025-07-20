@@ -24,9 +24,7 @@
             <td>${r.comment}</td>
             <td>${r.createdAt}</td>
             <td>
-                <a href="${pageContext.request.contextPath}/admin/reviews?action=delete&id=${r.id}"
-                 onclick="return confirm('Xoá đánh giá này?')">🗑 Xoá</a>
-
+                <a href="review?action=delete&id=${r.id}" onclick="return confirm('Xoá đánh giá này?')">🗑 Xoá</a>
             </td>
         </tr>
     </c:forEach>

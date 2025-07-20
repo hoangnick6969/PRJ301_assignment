@@ -17,8 +17,9 @@ public class ProductImage {
     @ManyToOne @JoinColumn(name = "productId")
     private Product product;
 
-  @Column(name = "imageUl") // map đúng tên trong SQL
+    @Column(nullable = false)
     private String imageUrl;
+
     public ProductImage() {
     }
 

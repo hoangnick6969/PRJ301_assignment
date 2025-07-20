@@ -1,50 +1,36 @@
-    package controller.user;
+package controller.user;
 
 import dao.CartItemDAO;
-    import dao.CategoryDAO;
-    import jakarta.servlet.ServletException;
-    import jakarta.servlet.annotation.WebServlet;
-    import jakarta.servlet.http.*;
-    import model.Category;
-    import model.Product;
-
-    import java.io.IOException;
-    import java.util.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import model.CartItem;
 import model.Customer;
 
+import java.io.IOException;
+import java.util.List;
+
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart"})
 public class CartServlet extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        Customer customer = (Customer) session.getAttribute("user");
-
-        Map<Product, Integer> cart = new LinkedHashMap<>();
-
-        if (customer != null) {
-            CartItemDAO cartItemDAO = new CartItemDAO();
-            List<CartItem> items = cartItemDAO.getByCustomer(customer);
-
-            for (CartItem item : items) {
-                cart.put(item.getProduct(), item.getQuantity());
+        try {
+            Customer customer = (Customer) request.getSession().getAttribute("user");
+            if (customer == null) {
+                response.sendRedirect("login.jsp");
+                return;
             }
+
+            CartItemDAO cartItemDAO = new CartItemDAO();
+            List<CartItem> cartItems = cartItemDAO.getByCustomer(customer);
+            request.setAttribute("cart", cartItems);
+            request.getRequestDispatcher("cart.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi hiển thị giỏ hàng");
         }
-
-        double total = cart.entrySet().stream()
-                .mapToDouble(e -> e.getKey().getPrice() * e.getValue())
-                .sum();
-
-        CategoryDAO categoryDAO = new CategoryDAO();
-        List<Category> categories = categoryDAO.getAll();
-        request.setAttribute("categories", categories);
-
-        request.setAttribute("cart", cart);
-        request.setAttribute("total", total);
-
-        request.getRequestDispatcher("/views/user/cart/view.jsp").forward(request, response);
     }
 }

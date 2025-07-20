@@ -1,76 +1,76 @@
-    package model;
+package model;
 
-    import jakarta.persistence.*;
-    import lombok.*;
-    import java.util.Date;
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.Date;
 
-    @Entity
-    @Table(name = "ContactMessage")
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-    public class ContactMessage {
+@Entity
+@Table(name = "ContactMessage")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class ContactMessage {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-        private String name;
+    private String name;
 
-        private String email;
+    private String email;
 
-        private String subject;
+    private String subject;
 
-        @Column(columnDefinition = "NVARCHAR(MAX)")
-        private String content; 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
+    private String message;
 
-        @Temporal(TemporalType.TIMESTAMP)
-        private Date sentAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date sentAt;
 
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getSubject() {
-            return subject;
-        }
-
-        public void setSubject(String subject) {
-            this.subject = subject;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public Date getSentAt() {
-            return sentAt;
-        }
-
-        public void setSentAt(Date sentAt) {
-            this.sentAt = sentAt;
-        }
+    public int getId() {
+        return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Date getSentAt() {
+        return sentAt;
+    }
+
+    public void setSentAt(Date sentAt) {
+        this.sentAt = sentAt;
+    }
+    
+}

@@ -21,30 +21,23 @@ public class AdminBlogServlet extends HttpServlet {
 
         String action = request.getParameter("action");
 
-        try {
-            if (action == null) {
-                List<BlogPost> list = blogDAO.getAll();
-                request.setAttribute("blogList", list);
-                request.getRequestDispatcher("/views/admin/blog/list.jsp").forward(request, response);
+        if (action == null) {
+            List<BlogPost> list = blogDAO.getAll();
+            request.setAttribute("blogs", list);
+            request.getRequestDispatcher("/admin/blog-list.jsp").forward(request, response);
 
-            } else if ("edit".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                BlogPost blog = blogDAO.findById(id);
-                request.setAttribute("blog", blog);
-                request.getRequestDispatcher("/views/admin/blog/form.jsp").forward(request, response);
+        } else if (action.equals("edit")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            BlogPost blog = blogDAO.findById(id);
+            request.setAttribute("blog", blog);
+            request.getRequestDispatcher("/admin/blog-form.jsp").forward(request, response);
 
-            } else if ("delete".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                blogDAO.delete(id);
-                response.sendRedirect("blogs");
-
-            } else if ("add".equals(action)) {
-                request.getRequestDispatcher("/views/admin/blog/form.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Lỗi xử lý blog: " + e.getMessage());
-            request.getRequestDispatcher("/views/admin/common/error.jsp").forward(request, response);
+        } else if (action.equals("delete")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            blogDAO.delete(id);
+            response.sendRedirect("blogs");
+        } else if (action.equals("add")) {
+            request.getRequestDispatcher("/admin/blog-form.jsp").forward(request, response);
         }
     }
 
@@ -57,13 +50,13 @@ public class AdminBlogServlet extends HttpServlet {
 
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        String thumbnail = request.getParameter("thumbnail");
+        
 
         BlogPost blog = new BlogPost();
         blog.setId(id);
         blog.setTitle(title);
         blog.setContent(content);
-        blog.setThumbnail(thumbnail);
+        
         blog.setCreatedAt(new Date());
 
         if (id == 0) {

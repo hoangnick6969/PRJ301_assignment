@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:include page="../../common/header.jsp" />
+<jsp:include page="/user/common/header.jsp" />
 
 <h2>🧾 Thanh toán đơn hàng</h2>
 
@@ -24,4 +24,4 @@
     <button type="submit">✅ Xác nhận đặt hàng</button>
 </form>
 
-<jsp:include page="../../common/footer.jsp" />
+<jsp:include page="/user/common/footer.jsp" />

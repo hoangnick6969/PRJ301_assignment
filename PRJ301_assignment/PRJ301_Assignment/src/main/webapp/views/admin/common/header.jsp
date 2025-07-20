@@ -39,16 +39,12 @@
 
 <div class="admin-nav">
     <a href="${pageContext.request.contextPath}/admin/dashboard">🏠 Dashboard</a>
-    <a href="${pageContext.request.contextPath}/admin/products">📦 Sản phẩm</a>
-    <a href="${pageContext.request.contextPath}/admin/orders">🧾 Đơn hàng</a>
-    <a href="${pageContext.request.contextPath}/admin/customers">👥 Khách hàng</a>
-    <a href="${pageContext.request.contextPath}/admin/reviews">⭐ Đánh giá</a>
-    <a href="${pageContext.request.contextPath}/admin/messages">📨 Liên hệ</a>
-    <a href="${pageContext.request.contextPath}/admin/categories">📂 Danh mục</a>
-    <a href="${pageContext.request.contextPath}/admin/banners">🖼 Banner</a>
-    <a href="${pageContext.request.contextPath}/admin/blogs">📝 Bài viết</a>
+    <a href="${pageContext.request.contextPath}/admin/product">📦 Sản phẩm</a>
+    <a href="${pageContext.request.contextPath}/admin/order">🧾 Đơn hàng</a>
+    <a href="${pageContext.request.contextPath}/admin/customer">👥 Khách hàng</a>
+    <a href="${pageContext.request.contextPath}/admin/review">⭐ Đánh giá</a>
+    <a href="${pageContext.request.contextPath}/admin/contact">📨 Liên hệ</a>
     <a href="${pageContext.request.contextPath}/admin/logout" style="float:right;">🚪 Đăng xuất</a>
-
 </div>
 
 <div class="admin-content">

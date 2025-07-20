@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "AdminContactMessageServlet", urlPatterns = {"/admin/messages"})
-public class AdminContactMessageServlet extends HttpServlet {
+    public class AdminContactMessageServlet extends HttpServlet {
 
     private final ContactMessageDAO dao = new ContactMessageDAO();
 
@@ -18,30 +18,8 @@ public class AdminContactMessageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        if (session.getAttribute("admin") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
-        String action = request.getParameter("action");
-
-        try {
-            if ("delete".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                dao.delete(id);
-                response.sendRedirect("messages");
-                return;
-            }
-
-            List<ContactMessage> list = dao.getAll();
-            request.setAttribute("contactList", list);
-            request.getRequestDispatcher("/views/admin/contact/list.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Lỗi xử lý liên hệ: " + e.getMessage());
-            request.getRequestDispatcher("/views/admin/common/error.jsp").forward(request, response);
-        }
+        List<ContactMessage> list = dao.getAll();
+        request.setAttribute("messages", list);
+        request.getRequestDispatcher("/admin/contact-message.jsp").forward(request, response);
     }
 }

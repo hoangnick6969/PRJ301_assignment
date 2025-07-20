@@ -18,20 +18,6 @@ public class CustomerDAO {
             em.close();
         }
     }
-    public Customer findByEmailAndPassword(String email, String password) {
-     EntityManager em = JPAUtil.getEntityManager();
-     try {
-         return em.createQuery("SELECT c FROM Customer c WHERE c.email = :email AND c.password = :password", Customer.class)
-                  .setParameter("email", email)
-                  .setParameter("password", password)
-                  .getSingleResult();
-     } catch (NoResultException e) {
-         return null;
-     } finally {
-         em.close();
-     }
- }
-
     public void update(Customer customer) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction trans = em.getTransaction();
@@ -47,7 +33,6 @@ public class CustomerDAO {
             em.close();
         }
     }
-
 
     public void insert(Customer c) {
         EntityManager em = JPAUtil.getEntityManager();

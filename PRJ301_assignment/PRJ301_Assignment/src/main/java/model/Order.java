@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "[Order]")
+@Table(name = "Order")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Order {
 

@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter(filterName = "UserAuthenticationFilter", urlPatterns = {
-    "/cart", "/checkout", "/add-to-cart", "/remove-from-cart"
+        "/cart", "/checkout", "/add-to-cart", "/remove-from-cart"
 })
 public class UserAuthenticationFilter implements Filter {
 
@@ -18,15 +18,13 @@ public class UserAuthenticationFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
         boolean loggedIn = (session != null && session.getAttribute("user") != null);
 
         if (loggedIn) {
-            chain.doFilter(request, response);
+            chain.doFilter(request, response); // cho phép đi tiếp
         } else {
-            // ✅ Đổi lại đường dẫn đến LoginServlet
-            res.sendRedirect(req.getContextPath() + "/login");
+            ((HttpServletResponse) response).sendRedirect("login.jsp");
         }
     }
 
@@ -36,4 +34,3 @@ public class UserAuthenticationFilter implements Filter {
     @Override
     public void destroy() {}
 }
-

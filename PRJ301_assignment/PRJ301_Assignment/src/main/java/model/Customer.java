@@ -18,11 +18,10 @@ public class Customer {
 
     @Column(nullable = false, length = 100)
     private String password;
-    
+
     private String phone;
     private String address;
 
-   
     public Customer() {
     }
 
@@ -73,5 +72,5 @@ public class Customer {
     public void setAddress(String address) {
         this.address = address;
     }
-   
+    
 }

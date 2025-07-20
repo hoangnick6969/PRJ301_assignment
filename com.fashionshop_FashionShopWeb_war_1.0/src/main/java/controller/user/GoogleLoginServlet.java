@@ -11,7 +11,7 @@ import java.net.URLEncoder;
 
 @WebServlet("/login-google")
 public class GoogleLoginServlet extends HttpServlet {
-    private static final String CLIENT_ID = "310697196810-p53d42ua0mm2gdld2sfl2493m4ihvibg.apps.googleusercontent.com";
+    private static final String CLIENT_ID = "310697196810-4o2d70i186oiq4lsa2s2jkc7tfijp2n7.apps.googleusercontent.com";
     private static final String REDIRECT_URI = "http://localhost:8080/PRJ301_Assignment/login-google-callback";
     private static final String SCOPE = "email profile openid";
 
@@ -22,8 +22,8 @@ public class GoogleLoginServlet extends HttpServlet {
                 + "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, "UTF-8")
                 + "&response_type=code"
                 + "&scope=" + URLEncoder.encode(SCOPE, "UTF-8")
-                + "&access_type=offline";
-
+                + "&access_type=offline"
+                + "&prompt=consent";
         response.sendRedirect(loginUrl);
     }
 }

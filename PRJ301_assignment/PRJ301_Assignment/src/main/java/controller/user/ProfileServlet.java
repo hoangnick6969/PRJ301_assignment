@@ -15,60 +15,40 @@ public class ProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        Customer customer = (Customer) session.getAttribute("user");
-
+        Customer customer = (Customer) request.getSession().getAttribute("user");
         if (customer == null) {
-            response.sendRedirect("login");
+            response.sendRedirect("login.jsp");
             return;
         }
 
         request.setAttribute("user", customer);
-
-        // Hiển thị thông báo nếu có ?success=1 hoặc ?success=0
-        String success = request.getParameter("success");
-        if ("1".equals(success)) {
-            request.setAttribute("success", "Cập nhật thành công!");
-        } else if ("0".equals(success)) {
-            request.setAttribute("error", "Cập nhật thất bại. Vui lòng kiểm tra lại thông tin.");
-        }
-
-        request.getRequestDispatcher("/views/user/profile/view.jsp").forward(request, response);
+        request.getRequestDispatcher("profile.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        Customer customer = (Customer) session.getAttribute("user");
-
+        Customer customer = (Customer) request.getSession().getAttribute("user");
         if (customer == null) {
-            response.sendRedirect("login");
+            response.sendRedirect("login.jsp");
             return;
         }
 
         String name = request.getParameter("name");
+        String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
 
-        // Validate đơn giản
-        if (name == null || name.trim().isEmpty()
-                || phone == null || phone.trim().isEmpty()
-                || address == null || address.trim().isEmpty()) {
-            response.sendRedirect("profile?success=0");
-            return;
-        }
-
-        // Cập nhật dữ liệu
-        customer.setName(name.trim());
-        customer.setPhone(phone.trim());
-        customer.setAddress(address.trim());
+        // Cập nhật
+        customer.setName(name);
+        customer.setEmail(email);
+        customer.setPhone(phone);
 
         CustomerDAO dao = new CustomerDAO();
         dao.update(customer);
 
-        session.setAttribute("user", customer); // Cập nhật lại session
-        response.sendRedirect("profile?success=1");
+        // Cập nhật lại session
+        request.getSession().setAttribute("user", customer);
+        response.sendRedirect("profile.jsp?success=1");
     }
 }

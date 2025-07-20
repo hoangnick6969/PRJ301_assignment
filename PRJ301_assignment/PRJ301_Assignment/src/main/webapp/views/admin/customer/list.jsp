@@ -22,9 +22,9 @@
             <td>${c.phone}</td>
             <td>${c.address}</td>
             <td>
-                <a href="${pageContext.request.contextPath}/admin/orders?customerId=${c.id}">📦 Xem đơn hàng</a> |
-                <a href="${pageContext.request.contextPath}/admin/customers?action=delete&id=${c.id}"
-                   onclick="return confirm('Xoá khách hàng này?')">🗑 Xoá</a>
+                <a href="orders?customerId=${c.id}">📦 Xem đơn hàng</a>
+                <!-- Hoặc -->
+                <a href="customer?action=delete&id=${c.id}" onclick="return confirm('Xoá khách hàng này?')">🗑 Xoá</a>
             </td>
         </tr>
     </c:forEach>

@@ -10,20 +10,19 @@
 </h2>
 
 <form method="post" action="${pageContext.request.contextPath}/admin/products">
-    <!-- Nếu không có product thì set id = 0 -->
-    <input type="hidden" name="id" value="${product != null ? product.id : 0}" />
+    <input type="hidden" name="id" value="${product.id}" />
 
     <label>Tên sản phẩm:</label><br/>
-    <input type="text" name="name" value="${product != null ? product.name : ''}" required /><br/>
+    <input type="text" name="name" value="${product.name}" required /><br/>
 
     <label>Giá:</label><br/>
-    <input type="number" name="price" value="${product != null ? product.price : ''}" required /><br/>
+    <input type="number" name="price" value="${product.price}" required /><br/>
 
     <label>Ảnh chính:</label><br/>
-    <input type="text" name="mainImage" value="${product != null ? product.mainImage : ''}" /><br/>
+    <input type="text" name="mainImage" value="${product.mainImage}" /><br/>
 
     <label>Mô tả:</label><br/>
-    <textarea name="description">${product != null ? product.description : ''}</textarea><br/>
+    <textarea name="description">${product.description}</textarea><br/>
 
     <label>Danh mục:</label><br/>
     <select name="categoryId" required>
@@ -43,3 +42,4 @@
 </form>
 
 <jsp:include page="/views/admin/common/footer.jsp" />
+    

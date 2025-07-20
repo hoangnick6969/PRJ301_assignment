@@ -1,10 +1,12 @@
 package controller.admin;
 
 import dao.OrderDAO;
+import dao.OrderDetailDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.Order;
+import model.OrderDetail;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,90 +15,38 @@ import java.util.List;
 public class AdminOrderServlet extends HttpServlet {
 
     private final OrderDAO orderDAO = new OrderDAO();
+    private final OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        if (session.getAttribute("admin") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
         String action = request.getParameter("action");
 
-        try {
-            if (action == null) {
-                // ✅ Xử lý lọc theo khách hàng (nếu có)
-                String customerIdParam = request.getParameter("customerId");
-                List<Order> orders;
+        if (action == null) {
+            // Hiển thị danh sách đơn hàng
+            List<Order> orders = orderDAO.getAll();
+            request.setAttribute("orders", orders);
+            request.getRequestDispatcher("/admin/order-list.jsp").forward(request, response);
 
-                if (customerIdParam != null && !customerIdParam.isEmpty()) {
-                    int customerId = Integer.parseInt(customerIdParam);
-                    orders = orderDAO.findByCustomerId(customerId);
-                } else {
-                    orders = orderDAO.getAll();
-                }
+        } else if (action.equals("view")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Order order = orderDAO.findById(id);
+            List<OrderDetail> details = orderDetailDAO.getByOrder(order);
 
-                request.setAttribute("orderList", orders);
-                request.getRequestDispatcher("/views/admin/order/list.jsp").forward(request, response);
+            request.setAttribute("order", order);
+            request.setAttribute("details", details);
+            request.getRequestDispatcher("/admin/order-detail.jsp").forward(request, response);
 
-            } else if ("edit".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                Order o = orderDAO.findById(id);
-                request.setAttribute("order", o);
-                request.getRequestDispatcher("/views/admin/order/editStatus.jsp").forward(request, response);
-
-            } else if ("detail".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                Order o = orderDAO.findById(id);
-                request.setAttribute("order", o);
-                request.getRequestDispatcher("/views/admin/order/detail.jsp").forward(request, response);
-
-            } else if ("delete".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                orderDAO.delete(id);
-                response.sendRedirect("orders");
+        } else if (action.equals("updateStatus")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String status = request.getParameter("status");
+            Order order = orderDAO.findById(id);
+            if (order != null) {
+                order.setStatus(status);
+                orderDAO.update(order);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Lỗi xử lý yêu cầu: " + e.getMessage());
-            request.getRequestDispatcher("/views/admin/common/error.jsp").forward(request, response);
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
-        if (session.getAttribute("admin") == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
-        String action = request.getParameter("action");
-
-        try {
-            if ("updateStatus".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                String status = request.getParameter("status");
-
-                Order o = orderDAO.findById(id);
-                if (o != null) {
-                    o.setStatus(status);
-                    orderDAO.update(o);
-                }
-
-                response.sendRedirect("orders");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Lỗi cập nhật trạng thái: " + e.getMessage());
-            request.getRequestDispatcher("/views/admin/common/error.jsp").forward(request, response);
+            response.sendRedirect("orders");
         }
     }
 }
