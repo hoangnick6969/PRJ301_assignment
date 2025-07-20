@@ -6,6 +6,56 @@
     box-sizing: border-box;
 }
 
+/* Bootstrap Compatibility */
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-header {
+    border-bottom: none;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+}
+
+.breadcrumb-item a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    color: #764ba2;
+}
+
+.input-group-text {
+    border-radius: 0 8px 8px 0;
+}
+
+.coupon-preview {
+    min-height: 200px;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
